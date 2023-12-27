@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <Authors>EasyMicroservices</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.0.4</Version>
+    <Description>TemplateGenerator view model.</Description>
+    <Copyright>EasyMicroservices@gmail.com</Copyright>
+    <PackageTags>mvvm,viewmodel,viewmodels,modelviewviewmodel,ui,core,place,TemplateGenerator,city,country,province,location</PackageTags>
+    <PackageProjectUrl>https://github.com/EasyMicroservices/TemplateGenerator-UI</PackageProjectUrl>
+    <LangVersion>latest</LangVersion>
+    <DocumentationFile>.\bin\$(Configuration)\$(TargetFramework)\EasyMicroservices.UI.TemplateGenerator.ViewModels.xml</DocumentationFile>
+    <RootNamespace>EasyMicroservices.UI.TemplateGenerator</RootNamespace>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EasyMicroservices.TemplateGeneratorMicroservice.Clients" Version="0.0.0.17" />
+    <PackageReference Include="EasyMicroservices.UI.Cores.Mvvm" Version="0.0.0.13" />
+  </ItemGroup>
+
+</Project>

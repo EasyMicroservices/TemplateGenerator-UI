@@ -1,0 +1,164 @@
+﻿@page "/FilterFormsList"
+@using EasyMicroservices.UI.BlazorComponents
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms;
+@using MudBlazor;
+@using global::TemplateGenerators.GeneratedServices;
+@inject FilterFormsListViewModel viewModel;
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<MudDataGrid T="FormContract" ServerData="LoadGridData" MultiSelection="true" OverscanCount="viewModel.TotalCount" Items="viewModel.Forms" SortMode="SortMode.Multiple" Filterable="true"
+             Hideable="true">
+    <ToolBarContent>
+        <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddDialog()" />
+            <MudText Typo="Typo.h6" mar>@viewModel.GetLanguage("Forms")</MudText>
+        </MudStack>
+        
+        <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="@viewModel.GetLanguage("Search")" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SearchCommand.Execute(null)">
+            @if (viewModel.IsBusy)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@viewModel.GetLanguage("Processing")</MudText>
+            }
+            else
+            {
+                <MudText>@viewModel.GetLanguage("Search")</MudText>
+            }
+        </MudButton>
+    </ToolBarContent>
+    <Columns>
+        <SelectColumn T="FormContract" />
+        <PropertyColumn Property="x => x.Id" Title="@viewModel.GetLanguage("Id")" />
+        <PropertyColumn Property="x => x.Name" Title="@viewModel.GetLanguage("Name")" />
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateDialog(context.Item)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="FormContract" />
+    </PagerContent>
+</MudDataGrid>
+<BaseDialog @ref="addDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3" /> @_AddOrUpdateTitle
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <AddOrUpdateForm @ref="addOrUpdateFormView" />
+    </DialogContent>
+</BaseDialog>
+<BaseDialog @ref="deleteDialog">
+    <TitleContent>
+        <MudText>
+            @viewModel.GetLanguage("DeleteForm_Title")
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @viewModel.GetLanguage("DeleteQuestion_Content")
+    </DialogContent>
+    <DialogActions>
+        @if (!viewModel.IsBusy)
+        {
+            <MudButton OnClick="() => deleteDialog.CloseDialog()">@viewModel.GetLanguage("Cancel")</MudButton>
+        }
+        <MudButton Color="Color.Error" Variant="Variant.Filled" Disabled="viewModel.IsBusy" OnClick="()=>DoDelete()">
+            @if (viewModel.IsBusy)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@viewModel.GetLanguage("Deleting")</MudText>
+            }
+            else
+            {
+                <MudText>@viewModel.GetLanguage("Delete")</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</BaseDialog>
+
+@code {
+    AddOrUpdateForm addOrUpdateFormView;
+    BaseDialog addDialog;
+    BaseDialog deleteDialog;
+    private string _searchString;
+    private string _AddOrUpdateTitle;
+    private string _AddOrUpdatedMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        viewModel.BindPropertyChanged(StateHasChanged);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task<GridData<FormContract>> LoadGridData(GridState<FormContract> state)
+    {
+        viewModel.Index = state.Page * 10;
+        viewModel.Length = state.PageSize;
+        await viewModel.SearchCommand.ExecuteAsync(null);
+        GridData<FormContract> data = new()
+            {
+                Items = viewModel.Forms,
+                TotalItems = viewModel.TotalCount
+            };
+
+        return data;
+    }
+
+    void ShowUpdateDialog(FormContract formContract)
+    {
+        _AddOrUpdateTitle = @viewModel.GetLanguage("UpdateForm_Title");
+        _AddOrUpdatedMessage = @viewModel.GetLanguage("UpdateForm_Message");
+        ShowAddOrUpdateDialog(formContract);
+    }
+
+    void ShowAddDialog()
+    {
+        _AddOrUpdateTitle = @viewModel.GetLanguage("AddForm_Title");
+        _AddOrUpdatedMessage = @viewModel.GetLanguage("AddForm_Message");
+        ShowAddOrUpdateDialog(null);
+    }
+
+    void ShowAddOrUpdateDialog(FormContract formContract)
+    {
+        addDialog.ShowDialog(() =>
+        {
+            addOrUpdateFormView.ViewModel.Clear();
+            addOrUpdateFormView.ViewModel.UpdateFormContract = formContract;
+            addOrUpdateFormView.ViewModel.OnSuccess = () =>
+            {
+                addDialog.CloseDialog();
+                viewModel.SearchCommand.Execute(null);
+                Snackbar.Add(_AddOrUpdatedMessage, Severity.Success);
+            };
+        });
+    }
+
+    void ShowDeleteDialog(FormContract formContract)
+    {
+        viewModel.SelectedFormContract = formContract;
+        deleteDialog.ShowDialog();
+    }
+
+    void DoDelete()
+    {
+        viewModel.OnDelete = (o) =>
+        {
+            deleteDialog.CloseDialog();
+            StateHasChanged();
+            Snackbar.Add(@viewModel.GetLanguage("DeleteForm_Message"), Severity.Success);
+        };
+        viewModel.DeleteCommand.Execute(viewModel.SelectedFormContract);
+    }
+
+    void CloseDeleteDialog(FormContract formContract)
+    {
+         deleteDialog.CloseDialog();
+    }
+}
