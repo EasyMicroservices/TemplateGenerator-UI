@@ -38,7 +38,7 @@
             </ToolBarContent>
             <Columns>
                 <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
-                <PropertyColumn Property="x => x.Title" Title="@viewModel.GetLanguage("Title")" />
+                <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetLanguage("Title")" />
                 <PropertyColumn Property="x => x.Type" />
                 <TemplateColumn CellClass="d-flex justify-end">
                     <CellTemplate>

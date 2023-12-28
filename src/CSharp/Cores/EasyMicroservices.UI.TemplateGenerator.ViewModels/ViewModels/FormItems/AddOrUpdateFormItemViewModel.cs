@@ -1,6 +1,7 @@
 ﻿using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.Cores.Commands;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
 using TemplateGenerators.GeneratedServices;
@@ -110,6 +111,13 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             _DefaultValue = value;
             OnPropertyChanged(nameof(DefaultValue));
         }
+    }
+
+    public string GetTitle(FormItemContract formItemContract)
+    {
+        if (formItemContract.Title.IsNullOrEmpty())
+            return formItemContract.PrimaryFormItem?.Title ?? GetLanguage("NoName!");
+        return formItemContract.Title;
     }
 
     FormItemContract GetContract()
