@@ -15,17 +15,6 @@
                 <MudTextField @bind-Value="viewModel.Name" Label="@viewModel.GetLanguage("Name")" Variant="Variant.Text"></MudTextField>
             </MudStack>
         </MudPaper>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SaveCommand.Execute(null)">
-            @if (viewModel.IsBusy)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                <MudText Class="ms-2">@viewModel.GetLanguage("Saving")</MudText>
-            }
-            else
-            {
-                <MudText>@viewModel.GetLanguage("Save")</MudText>
-            }
-        </MudButton>
         <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
             <ToolBarContent>
                 <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
@@ -45,6 +34,17 @@
                 </TemplateColumn>
             </Columns>
         </MudDataGrid>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SaveCommand.Execute(null)">
+            @if (viewModel.IsBusy)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@viewModel.GetLanguage("Saving")</MudText>
+            }
+            else
+            {
+                <MudText>@viewModel.GetLanguage("Save")</MudText>
+            }
+        </MudButton>
     </MudStack>
     <BaseDialog @ref="deleteDialog">
         <TitleContent>

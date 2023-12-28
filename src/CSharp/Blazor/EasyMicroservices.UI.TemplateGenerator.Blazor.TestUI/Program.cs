@@ -4,6 +4,7 @@ using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.NoParentFormItems;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -18,11 +19,13 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(sp => new FormClient("http://localhost:1050", sp.GetService<HttpClient>()));
+builder.Services.AddScoped(sp => new NoParentFormItemClient("http://localhost:1050", sp.GetService<HttpClient>()));
 
 builder.Services.AddTransient<FilterFormsListViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormItemViewModel>();
 builder.Services.AddTransient<DialogBaseViewModel>();
+builder.Services.AddTransient<FilterNoParentFormItemsListViewModel>();
 
 builder.Services.AddMudServices(config =>
 {
@@ -170,5 +173,17 @@ void LoadLanguage(string languageShortName)
     {
         ShortName = languageShortName,
         Value = "Form updated!"
+    });
+
+    BaseViewModel.AppendLanguage("NoParentFormItems", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Form Items"
+    });
+
+    BaseViewModel.AppendLanguage("AddNoParentFormItem_Title", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Add Form Items"
     });
 }

@@ -11,8 +11,8 @@
     <MudStack>
         <MudPaper Class="pa-4">
             <MudStack Spacing="4">
-                <MudTextField @bind-Value="viewModel.Title" Label="@viewModel.GetLanguage("Title")" Variant="Variant.Text"></MudTextField>
-                <MudSelect @bind-Value="viewModel.Type" Label="@viewModel.GetLanguage("Type")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Title" Label="@viewModel.GetLanguage("Title")" Variant="Variant.Text"></MudTextField>
+                <MudSelect Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Type" Label="@viewModel.GetLanguage("Type")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
                     @foreach (ItemType item in Enum.GetValues<ItemType>())
                     {
                         if ((int)item < 6)
@@ -20,9 +20,34 @@
                         <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
                     }
                 </MudSelect>
-                <MudTextField @bind-Value="viewModel.DefaultValue" Label="@viewModel.GetLanguage("DefaultValue")" Variant="Variant.Text"></MudTextField>
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.DefaultValue" Label="@viewModel.GetLanguage("DefaultValue")" Variant="Variant.Text"></MudTextField>
+                <MudSelect @bind-Value="viewModel.SelectedNoParentFormItem" Label="@viewModel.GetLanguage("OtherComponent")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary" Clearable>
+                    @foreach (var item in viewModel.NoParentFormItems)
+                    {
+                        <MudSelectItem Value="@item">@item.Title</MudSelectItem>
+                    }
+                </MudSelect>
             </MudStack>
         </MudPaper>
+        <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
+            <ToolBarContent>
+                <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
+                    <MudFab Disabled="@viewModel.IsDisabled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddFormItemItemDialog()" />
+                    @viewModel.GetLanguage("FormItems")
+                </MudStack>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
+                <PropertyColumn Property="x => x.Title" Title="@viewModel.GetLanguage("Title")" />
+                <PropertyColumn Property="x => x.Type" />
+                <TemplateColumn CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemItemDialog(context.Item)" />
+                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SaveCommand.Execute(null)">
             @if (viewModel.IsBusy)
             {
@@ -34,25 +59,6 @@
                 <MudText>@viewModel.GetLanguage("Save")</MudText>
             }
         </MudButton>
-        <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
-            <ToolBarContent>
-                <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddFormItemItemDialog()" />
-                    @viewModel.GetLanguage("FormItems")
-                </MudStack>
-            </ToolBarContent>
-            <Columns>
-                <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
-                <PropertyColumn Property="x => x.Title" Title="@viewModel.GetLanguage("Title")" />
-                <PropertyColumn Property="x => x.Type" />
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemItemDialog(context.Item)" />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
-                    </CellTemplate>
-                </TemplateColumn>
-            </Columns>
-        </MudDataGrid>
     </MudStack>
     <BaseDialog @ref="addDialog">
         <TitleContent>
