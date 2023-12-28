@@ -16,8 +16,7 @@ LoadLanguage("en-US");
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-//string baseAddress = "http://localhost:1050";
-string baseAddress = "http://templategenerator.adahmsay.ir";
+string baseAddress = "http://localhost:1050";
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(sp => new FormClient(baseAddress, sp.GetService<HttpClient>()));
