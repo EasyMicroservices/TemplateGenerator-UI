@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Authors>EasyMicroservices</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.0.4</Version>
+    <IsPackable>true</IsPackable>
+    <Version>0.0.0.1</Version>
     <Description>TemplateGenerator view model.</Description>
     <Copyright>EasyMicroservices@gmail.com</Copyright>
-    <PackageTags>mvvm,viewmodel,viewmodels,modelviewviewmodel,ui,core,place,TemplateGenerator,city,country,province,location</PackageTags>
+    <PackageTags>component,microcomponent,ui,core,templategenerator,generator,template,form,formgenerator</PackageTags>
     <PackageProjectUrl>https://github.com/EasyMicroservices/TemplateGenerator-UI</PackageProjectUrl>
     <LangVersion>latest</LangVersion>
     <DocumentationFile>.\bin\$(Configuration)\$(TargetFramework)\EasyMicroservices.UI.TemplateGenerator.ViewModels.xml</DocumentationFile>
