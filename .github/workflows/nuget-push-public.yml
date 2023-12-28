@@ -16,19 +16,19 @@ jobs:
           DOTNET_INSTALL_DIR: /usr/share/dotnet
       - name: Restore dependencies
         run: |
-          dotnet restore ./src/CSharp/Blazor/EasyMicroservices.UI.Places.Blazor.sln
-          dotnet restore ./src/CSharp/Cores/EasyMicroservices.UI.Places.Core.sln
+          dotnet restore ./src/CSharp/Blazor/EasyMicroservices.UI.TemplateGenerator.Blazor.sln
+          dotnet restore ./src/CSharp/Cores/EasyMicroservices.UI.TemplateGenerator.Core.sln
       - name: Build
         run: |
-          dotnet build ./src/CSharp/Blazor/EasyMicroservices.UI.Places.Blazor.sln --no-restore
-          dotnet build ./src/CSharp/Cores/EasyMicroservices.UI.Places.Core.sln --no-restore
+          dotnet build ./src/CSharp/Blazor/EasyMicroservices.UI.TemplateGenerator.Blazor.sln --no-restore
+          dotnet build ./src/CSharp/Cores/EasyMicroservices.UI.TemplateGenerator.Core.sln --no-restore
       - name: Test
         run: |
-          dotnet test ./src/CSharp/Blazor/EasyMicroservices.UI.Places.Blazor.sln --no-build --verbosity normal
-          dotnet test ./src/CSharp/Cores/EasyMicroservices.UI.Places.Core.sln --no-build --verbosity normal
+          dotnet test ./src/CSharp/Blazor/EasyMicroservices.UI.TemplateGenerator.Blazor.sln --no-build --verbosity normal
+          dotnet test ./src/CSharp/Cores/EasyMicroservices.UI.TemplateGenerator.Core.sln --no-build --verbosity normal
       - name: Create the package
         run: |
-          dotnet pack ./src/CSharp/Blazor/EasyMicroservices.UI.Places.Blazor.sln --output nupkgs
-          dotnet pack ./src/CSharp/Cores/EasyMicroservices.UI.Places.Core.sln --output nupkgs
+          dotnet pack ./src/CSharp/Blazor/EasyMicroservices.UI.TemplateGenerator.Blazor.sln --output nupkgs
+          dotnet pack ./src/CSharp/Cores/EasyMicroservices.UI.TemplateGenerator.Core.sln --output nupkgs
       - name: Publish the package to NuGet.org
         run: dotnet nuget push nupkgs\*.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
