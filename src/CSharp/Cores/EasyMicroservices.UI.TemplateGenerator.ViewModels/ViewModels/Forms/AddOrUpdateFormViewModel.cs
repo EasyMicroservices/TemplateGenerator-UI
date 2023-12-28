@@ -2,6 +2,7 @@
 using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.Cores.Commands;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows.Input;
 using TemplateGenerators.GeneratedServices;
 
@@ -100,6 +101,13 @@ namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms
         T GetCurrentProperty<T>(Func<FormContract, T> func)
         {
             return UpdateFormContract == null ? default : func(UpdateFormContract);
+        }
+
+        public string GetTitle(FormItemContract formItemContract)
+        {
+            if (formItemContract.Title.IsNullOrEmpty())
+                return formItemContract.PrimaryFormItem?.Title ?? GetLanguage("NoName!");
+            return formItemContract.Title;
         }
 
         public async Task LoadConfig()
