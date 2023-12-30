@@ -17,7 +17,7 @@
                     {
                         if ((int)item < 6)
                             continue;
-                        <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
+                        <MudSelectItem Value="@item">@viewModel.GetLanguage(@item.ToString())</MudSelectItem>
                     }
                 </MudSelect>
                 <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.DefaultValue" Label="@viewModel.GetLanguage("DefaultValue")" Variant="Variant.Text"></MudTextField>

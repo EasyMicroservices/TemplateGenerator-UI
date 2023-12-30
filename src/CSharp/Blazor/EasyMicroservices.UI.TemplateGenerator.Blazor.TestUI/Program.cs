@@ -188,4 +188,74 @@ void LoadLanguage(string languageShortName)
         ShortName = languageShortName,
         Value = "Add Form Items"
     });
+    BaseViewModel.AppendLanguage("TextBox", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "TextBox"
+    });
+    BaseViewModel.AppendLanguage("CheckList", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "CheckList"
+    });
+    BaseViewModel.AppendLanguage("CheckBox", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "CheckBox"
+    });
+    BaseViewModel.AppendLanguage("OptionList", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "OptionList"
+    });
+    BaseViewModel.AppendLanguage("DateTime", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "DateTime"
+    });
+    BaseViewModel.AppendLanguage("DateOnly", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "DateOnly"
+    });
+    BaseViewModel.AppendLanguage("TimeOnly", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "TimeOnly"
+    });
+    BaseViewModel.AppendLanguage("Label", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Label"
+    });
+    BaseViewModel.AppendLanguage("Table", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Table"
+    });
+    BaseViewModel.AppendLanguage("Row", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Row"
+    });
+    BaseViewModel.AppendLanguage("AutoIncrementNumber", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "AutoIncrementNumber"
+    });
+    BaseViewModel.AppendLanguage("Column", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Column"
+    });
+    BaseViewModel.AppendLanguage("Menu", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Menu"
+    });
+    BaseViewModel.AppendLanguage("Card", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Card"
+    });
 }
