@@ -165,7 +165,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
 
     public async Task SaveNotParentToService()
     {
-        if (UpdateFormItemContract == null)
+        if (UpdateFormItemContract == null || UpdateFormItemContract.Id == 0)
         {
             var addContract = GetCreateContract();
             var addResult = await _noParentFormItemClient.AddAsync(addContract);
