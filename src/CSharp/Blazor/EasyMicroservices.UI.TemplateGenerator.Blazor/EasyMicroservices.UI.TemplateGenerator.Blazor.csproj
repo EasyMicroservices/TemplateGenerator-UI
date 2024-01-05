@@ -4,7 +4,7 @@
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Authors>EasyMicroservices</Authors>
     <IsPackable>true</IsPackable>
-    <Version>0.0.0.9</Version>
+    <Version>0.0.0.10</Version>
     <Description>TemplateGenerator UI compoents.</Description>
     <Copyright>EasyMicroservices@gmail.com</Copyright>
     <PackageTags>component,microcomponent,ui,core,templategenerator,generator,template,form,formgenerator</PackageTags>
@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="EasyMicroservices.UI.BlazorComponents" Version="*" />
-    <PackageReference Include="MudBlazor" Version="6.11.2" />
+    <PackageReference Include="MudBlazor" Version="6.12.0" />
   </ItemGroup>
 
   <ItemGroup>

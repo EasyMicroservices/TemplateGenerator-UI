@@ -69,7 +69,7 @@ namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms
 
         public async Task Save()
         {
-            if (UpdateFormContract is not null)
+            if (UpdateFormContract is not null || UpdateFormContract.Id > 0)
                 await UpdateForm();
             else
                 await AddForm();
