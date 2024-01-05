@@ -37,6 +37,9 @@ builder.Services.AddTransient<TextBoxFormItemViewModel>();
 builder.Services.AddTransient<SingleSelectFormItemViewModel>();
 builder.Services.AddTransient<DateOnlyFormItemViewModel>();
 builder.Services.AddTransient<CardFormItemViewModel>();
+builder.Services.AddTransient<ButtonFormItemViewModel>();
+builder.Services.AddTransient<HorizontalStackFormItemViewModel>();
+builder.Services.AddTransient<VerticalStackFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {
@@ -266,6 +269,21 @@ void LoadLanguage(string languageShortName)
     {
         ShortName = languageShortName,
         Value = "Card"
+    });
+    BaseViewModel.AppendLanguage("Button", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Button"
+    });
+    BaseViewModel.AppendLanguage("HorizontalStack", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "HorizontalStack"
+    });
+    BaseViewModel.AppendLanguage("VerticalStack", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "VerticalStack"
     });
     BaseViewModel.AppendLanguage("Ok", new LanguageContract()
     {
