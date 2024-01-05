@@ -1,0 +1,34 @@
+﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
+@using MudBlazor
+@using TemplateGenerators.GeneratedServices
+@inject FormItemListGeneratorViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudStack>
+        @foreach (var formItem in viewModel.FormItems)
+        {
+            <FormItemSingleItemGenerator FormItem="@formItem"/>
+        }
+    </MudStack>
+</MudRTLProvider>
+
+@code {
+    public FormItemListGeneratorViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    [Parameter]
+    [Category("Behavior")]
+    public ICollection<FormItemContract> FormItems
+    {
+        set
+        {
+            _ = viewModel.InitializeFormItems(value);
+        }
+    }
+}

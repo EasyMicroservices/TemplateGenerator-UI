@@ -1,9 +1,12 @@
 using EasyMicroservices.Domain.Contracts.Common;
 using EasyMicroservices.UI.BlazorComponents;
 using EasyMicroservices.UI.Cores;
+using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators.Components;
 using EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.NoParentFormItems;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -28,6 +31,10 @@ builder.Services.AddTransient<AddOrUpdateFormViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormItemViewModel>();
 builder.Services.AddTransient<DialogBaseViewModel>();
 builder.Services.AddTransient<FilterNoParentFormItemsListViewModel>();
+builder.Services.AddTransient<FormItemListGeneratorViewModel>();
+builder.Services.AddTransient<FormItemSingleItemGeneratorViewModel>();
+builder.Services.AddTransient<TextBoxFormItemViewModel>();
+builder.Services.AddTransient<SingleSelectFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {
@@ -257,5 +264,25 @@ void LoadLanguage(string languageShortName)
     {
         ShortName = languageShortName,
         Value = "Card"
+    });
+    BaseViewModel.AppendLanguage("Ok", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Ok"
+    });
+    BaseViewModel.AppendLanguage("PreviewFormItem_Title", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Preview"
+    });
+    BaseViewModel.AppendLanguage("ShowPreview", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Show Preview"
+    });
+    BaseViewModel.AppendLanguage("OtherComponent", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Other Component"
     });
 }
