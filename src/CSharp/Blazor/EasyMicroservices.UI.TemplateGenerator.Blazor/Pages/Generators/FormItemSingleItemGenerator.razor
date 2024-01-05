@@ -22,6 +22,18 @@
     {
         <CardFormItem FormItem="@viewModel.FormItem" />
     }
+    else if (viewModel.FormItem?.Type == ItemType.Button)
+    {
+        <ButtonFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.HorizontalStack)
+    {
+        <HorizontalStackFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.VerticalStack)
+    {
+        <VerticalStackFormItem FormItem="@viewModel.FormItem" />
+    }
 </MudRTLProvider>
 
 @code {
