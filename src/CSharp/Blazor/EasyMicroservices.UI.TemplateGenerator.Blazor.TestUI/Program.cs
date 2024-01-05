@@ -35,6 +35,8 @@ builder.Services.AddTransient<FormItemListGeneratorViewModel>();
 builder.Services.AddTransient<FormItemSingleItemGeneratorViewModel>();
 builder.Services.AddTransient<TextBoxFormItemViewModel>();
 builder.Services.AddTransient<SingleSelectFormItemViewModel>();
+builder.Services.AddTransient<DateOnlyFormItemViewModel>();
+builder.Services.AddTransient<CardFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {

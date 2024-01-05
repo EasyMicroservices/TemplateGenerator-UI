@@ -2,12 +2,12 @@
 using TemplateGenerators.GeneratedServices;
 
 namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components;
-public class TextBoxFormItemViewModel : BaseGeneratorViewModel
+public class DateOnlyFormItemViewModel : BaseGeneratorViewModel
 {
-    public TextBoxFormItemViewModel()
+    public DateOnlyFormItemViewModel()
     {
 
     }
 
-    public string Value { get; set; }
+    public DateTime? SelectedValue { get; set; }
 }
