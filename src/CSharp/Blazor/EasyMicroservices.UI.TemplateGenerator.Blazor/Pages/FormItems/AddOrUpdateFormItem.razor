@@ -1,6 +1,7 @@
 ﻿@page "/AddOrUpdateFormItem"
 @using EasyMicroservices.UI.BlazorComponents
 @using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
 @using MudBlazor
 @using global::TemplateGenerators.GeneratedServices;
@@ -58,6 +59,9 @@
             {
                 <MudText>@viewModel.GetLanguage("Save")</MudText>
             }
+        </MudButton> 
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Shower" Color="Color.Info" OnClick="(arg) => previewDialog.ShowDialog()">
+            <MudText>@viewModel.GetLanguage("ShowPreview")</MudText>
         </MudButton>
     </MudStack>
     <BaseDialog @ref="addDialog">
@@ -97,6 +101,19 @@
             </MudButton>
         </DialogActions>
     </BaseDialog>
+    <BaseDialog @ref="previewDialog">
+        <TitleContent>
+            <MudText>
+                @viewModel.GetLanguage("PreviewFormItem_Title")
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <FormItemListGenerator FormItems="@viewModel.FormItems"></FormItemListGenerator>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="() => previewDialog.CloseDialog()">@viewModel.GetLanguage("Ok")</MudButton>
+        </DialogActions>
+    </BaseDialog>
 </MudRTLProvider>
 @code {
     public AddOrUpdateFormItemViewModel ViewModel
@@ -107,7 +124,8 @@
         }
     }
     BaseDialog addDialog;
-    BaseDialog deleteDialog;
+    BaseDialog deleteDialog; 
+    BaseDialog previewDialog; 
     AddOrUpdateFormItem AddOrUpdateFormItemView { get; set; }
 
     protected override Task OnInitializedAsync()
