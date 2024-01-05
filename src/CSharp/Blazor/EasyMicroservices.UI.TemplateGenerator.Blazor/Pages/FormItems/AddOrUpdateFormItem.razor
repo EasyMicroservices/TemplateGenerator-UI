@@ -152,7 +152,7 @@
 
     void ShowDeleteDialog(FormItemContract formItemContract)
     {
-        viewModel.UpdateFormItemContract = formItemContract;
+        viewModel.DeleteFormItemContract = formItemContract;
         deleteDialog.ShowDialog();
     }
 
@@ -164,6 +164,6 @@
             StateHasChanged();
             Snackbar.Add(viewModel.GetLanguage("DeleteForm_Message"), Severity.Success);
         };
-        viewModel.DeleteCommand.Execute(viewModel.UpdateFormItemContract);
+        viewModel.DeleteCommand.Execute(viewModel.DeleteFormItemContract);
     }
 }

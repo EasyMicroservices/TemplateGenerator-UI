@@ -24,6 +24,9 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
 
     public Action<FormItemContract> OnDelete { get; set; }
     public Action<FormItemContract> OnSuccess { get; set; }
+    public FormItemContract DeleteFormItemContract { get; set; }
+
+
     FormItemContract _UpdateFormItemContract;
     /// <summary>
     /// for update
