@@ -6,7 +6,7 @@
 @inject HorizontalStackFormItemViewModel viewModel;
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
-    <MudStack Row="true">
+    <MudStack Row="true" AlignItems="AlignItems.End" Spacing="5">
         @foreach (var formItem in viewModel.FormItem?.Items)
         {
             <FormItemSingleItemGenerator FormItem="@formItem" />
