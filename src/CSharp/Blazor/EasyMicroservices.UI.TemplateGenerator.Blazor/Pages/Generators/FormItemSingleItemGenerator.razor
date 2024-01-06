@@ -34,6 +34,26 @@
     {
         <VerticalStackFormItem FormItem="@viewModel.FormItem" />
     }
+    else if (viewModel.FormItem?.Type == ItemType.CheckBox)
+    {
+        <CheckBoxFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.CheckList)
+    {
+        <MultipleSelectFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.Label)
+    {
+        <LabelFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.DateTime)
+    {
+        <DateTimeFormItem FormItem="@viewModel.FormItem" />
+    }
+    else if (viewModel.FormItem?.Type == ItemType.TimeOnly)
+    {
+        <TimeOnlyFormItem FormItem="@viewModel.FormItem" />
+    }
 </MudRTLProvider>
 
 @code {

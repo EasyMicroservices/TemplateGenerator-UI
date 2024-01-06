@@ -1,0 +1,30 @@
+﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
+@using MudBlazor
+@using TemplateGenerators.GeneratedServices
+@inject CheckBoxFormItemViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudCheckBox @bind-Value="viewModel.IsChecked" Color="Color.Primary" Label="@viewModel.FormItem?.Title"></MudCheckBox>
+</MudRTLProvider>
+
+@code {
+    public CheckBoxFormItemViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    [Parameter]
+    [Category("Behavior")]
+    public FormItemContract FormItem
+    {
+        set
+        {
+            viewModel.FormItem = value;
+        }
+    }
+}

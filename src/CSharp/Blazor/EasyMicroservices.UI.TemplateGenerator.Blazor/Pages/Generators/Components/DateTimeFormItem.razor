@@ -1,0 +1,34 @@
+﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
+@using MudBlazor
+@using TemplateGenerators.GeneratedServices
+@inject DateTimeFormItemViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudStack Row="true">
+        <MudDatePicker DisplayMonths="2" TitleDateFormat="yyyy-MM-dd" Label="@viewModel.FormItem?.Title" Editable="true" @bind-Date="viewModel.SelectedDateValue" Clearable>
+        </MudDatePicker>
+        <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="@viewModel.FormItem?.Title" @bind-Time="@viewModel.SelectedTimeValue" Clearable />
+    </MudStack>
+</MudRTLProvider>
+
+@code {
+    public DateTimeFormItemViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    [Parameter]
+    [Category("Behavior")]
+    public FormItemContract FormItem
+    {
+        set
+        {
+            viewModel.FormItem = value;
+        }
+    }
+}

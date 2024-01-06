@@ -4,7 +4,7 @@
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Authors>EasyMicroservices</Authors>
     <IsPackable>true</IsPackable>
-    <Version>0.0.0.14</Version>
+    <Version>0.0.0.15</Version>
     <Description>TemplateGenerator UI compoents.</Description>
     <Copyright>EasyMicroservices@gmail.com</Copyright>
     <PackageTags>component,microcomponent,ui,core,templategenerator,generator,template,form,formgenerator</PackageTags>
@@ -14,6 +14,10 @@
     <IsPackable>true</IsPackable>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EasyMicroservices.UI.BlazorComponents" Version="*" />
@@ -32,6 +36,18 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.25" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Generators\Components\CheckBoxFormItem.razor" />
   </ItemGroup>
 
 </Project>

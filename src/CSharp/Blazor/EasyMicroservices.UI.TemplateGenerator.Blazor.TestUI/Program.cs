@@ -40,6 +40,11 @@ builder.Services.AddTransient<CardFormItemViewModel>();
 builder.Services.AddTransient<ButtonFormItemViewModel>();
 builder.Services.AddTransient<HorizontalStackFormItemViewModel>();
 builder.Services.AddTransient<VerticalStackFormItemViewModel>();
+builder.Services.AddTransient<CheckBoxFormItemViewModel>();
+builder.Services.AddTransient<MultipleSelectFormItemViewModel>();
+builder.Services.AddTransient<LabelFormItemViewModel>();
+builder.Services.AddTransient<DateTimeFormItemViewModel>();
+builder.Services.AddTransient<TimeOnlyFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {
