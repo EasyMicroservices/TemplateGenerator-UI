@@ -6,7 +6,7 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
-        @foreach (var formItem in viewModel.FormItems.OrderBy(x => x.Index))
+        @foreach (var formItem in viewModel.FormItems?.OrderBy(x => x.Index))
         {
             <FormItemSingleItemGenerator FormItem="@formItem"/>
         }
