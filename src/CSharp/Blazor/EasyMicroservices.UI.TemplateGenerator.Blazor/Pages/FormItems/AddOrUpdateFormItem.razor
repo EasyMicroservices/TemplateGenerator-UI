@@ -38,6 +38,12 @@
                 </MudStack>
             </ToolBarContent>
             <Columns>
+                <TemplateColumn CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowUp" OnClick="(arg) => viewModel.MoveUp(context.Item)" />
+                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.MoveDown(context.Item)" />
+                    </CellTemplate>
+                </TemplateColumn>
                 <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
                 <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetLanguage("Title")" />
                 <PropertyColumn Property="x => x.Type" />
@@ -115,7 +121,7 @@
         </DialogActions>
     </BaseDialog>
 </MudRTLProvider>
-@code {
+    @code {
     public AddOrUpdateFormItemViewModel ViewModel
     {
         get
@@ -146,6 +152,7 @@
                 viewModel.FormItems.Add(contract);
                 addDialog.CloseDialog();
                 Snackbar.Add("ثبت با موفقیت انجام شد.", Severity.Success);
+                viewModel.ReOrderIndexes();
                 StateHasChanged();
             };
         });
@@ -159,10 +166,12 @@
             AddOrUpdateFormItemView.ViewModel.UpdateFormItemContract = formItemContract;
             AddOrUpdateFormItemView.ViewModel.OnSuccess = (item) =>
             {
+                var index = viewModel.FormItems.IndexOf(formItemContract);
                 viewModel.FormItems.Remove(formItemContract);
-                viewModel.FormItems.Insert(0, item);
+                viewModel.FormItems.Insert(index, item);
                 addDialog.CloseDialog();
                 Snackbar.Add("ویرایش با موفقیت انجام شد.", Severity.Success);
+                viewModel.ReOrderIndexes();
                 StateHasChanged();
             };
         });
@@ -179,6 +188,7 @@
         viewModel.OnDelete = (o) =>
         {
             deleteDialog.CloseDialog();
+            viewModel.ReOrderIndexes();
             StateHasChanged();
             Snackbar.Add(viewModel.GetLanguage("DeleteForm_Message"), Severity.Success);
         };

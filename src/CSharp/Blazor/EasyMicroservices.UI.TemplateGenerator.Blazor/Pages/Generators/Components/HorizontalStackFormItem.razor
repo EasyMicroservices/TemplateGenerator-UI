@@ -7,7 +7,7 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack Row="true" AlignItems="AlignItems.End" Spacing="5">
-        @foreach (var formItem in viewModel.FormItem?.Items)
+        @foreach (var formItem in viewModel.FormItem?.Items.OrderBy(x => x.Index))
         {
             <FormItemSingleItemGenerator FormItem="@formItem" />
         }

@@ -7,7 +7,7 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudSelect T="FormItemContract" MultiSelection="true" @bind-SelectedValues="@viewModel.SelectedValues" ToStringFunc="@converter" Label="@viewModel.FormItem?.Title" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" Clearable>
-        @foreach (var item in viewModel.FormItem?.Items)
+        @foreach (var item in viewModel.FormItem?.Items.OrderBy(x => x.Index))
         {
             <MudSelectItem Value="@item" />
         }

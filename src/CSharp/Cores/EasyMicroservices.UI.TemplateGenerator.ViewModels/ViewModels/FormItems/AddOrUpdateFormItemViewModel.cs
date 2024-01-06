@@ -197,6 +197,39 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
         }
     }
 
+    public void ReOrderIndexes()
+    {
+        int index = 0;
+        foreach (var item in FormItems)
+        {
+            item.Index = ++index;
+        }
+        OnPropertyChanged(nameof(FormItems));
+    }
+
+    public void MoveUp(FormItemContract formItemContract)
+    {
+        var index = FormItems.IndexOf(formItemContract);
+        index--;
+        if (index < 0)
+            index = 0;
+        FormItems.Remove(formItemContract);
+        FormItems.Insert(index, formItemContract);
+        ReOrderIndexes();
+    }
+
+    public void MoveDown(FormItemContract formItemContract)
+    {
+        var index = FormItems.IndexOf(formItemContract);
+        index++;
+        if (index >= FormItems.Count)
+            index = FormItems.Count - 1;
+        FormItems.Remove(formItemContract);
+        FormItems.Insert(index, formItemContract);
+        ReOrderIndexes();
+    }
+
+
     public void Clear()
     {
         Title = "";
