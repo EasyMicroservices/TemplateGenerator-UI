@@ -45,6 +45,7 @@ builder.Services.AddTransient<MultipleSelectFormItemViewModel>();
 builder.Services.AddTransient<LabelFormItemViewModel>();
 builder.Services.AddTransient<DateTimeFormItemViewModel>();
 builder.Services.AddTransient<TimeOnlyFormItemViewModel>();
+builder.Services.AddTransient<DataGridFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {

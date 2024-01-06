@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <Authors>EasyMicroservices</Authors>
     <IsPackable>true</IsPackable>
-    <Version>0.0.0.16</Version>
+    <Version>0.0.0.17</Version>
     <Description>TemplateGenerator UI compoents.</Description>
     <Copyright>EasyMicroservices@gmail.com</Copyright>
     <PackageTags>component,microcomponent,ui,core,templategenerator,generator,template,form,formgenerator</PackageTags>
@@ -16,16 +16,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EasyMicroservices.UI.BlazorComponents" Version="*" />
     <PackageReference Include="MudBlazor" Version="6.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Cores\EasyMicroservices.UI.TemplateGenerator.ViewModels\EasyMicroservices.UI.TemplateGenerator.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
@@ -36,18 +37,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.25" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Generators\Components\CheckBoxFormItem.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\Generators\Components\CheckBoxFormItem.razor" />
   </ItemGroup>
 
 </Project>

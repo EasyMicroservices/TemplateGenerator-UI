@@ -54,6 +54,10 @@
     {
         <TimeOnlyFormItem FormItem="@viewModel.FormItem" />
     }
+    else if (viewModel.FormItem?.Type == ItemType.Table)
+    {
+        <DataGridFormItem FormItem="@viewModel.FormItem" />
+    }
 </MudRTLProvider>
 
 @code {
