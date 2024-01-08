@@ -3,6 +3,8 @@ using EasyMicroservices.UI.BlazorComponents;
 using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators.Components;
 using EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators;
@@ -25,6 +27,9 @@ string baseAddress = "http://localhost:1050";
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(sp => new FormClient(baseAddress, sp.GetService<HttpClient>()));
 builder.Services.AddScoped(sp => new NoParentFormItemClient(baseAddress, sp.GetService<HttpClient>()));
+builder.Services.AddScoped(sp => new ActionClient(baseAddress, sp.GetService<HttpClient>()));
+builder.Services.AddScoped(sp => new EventClient(baseAddress, sp.GetService<HttpClient>()));
+builder.Services.AddScoped(sp => new FormItemEventClient(baseAddress, sp.GetService<HttpClient>()));
 
 builder.Services.AddTransient<FilterFormsListViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormViewModel>();
@@ -46,6 +51,13 @@ builder.Services.AddTransient<LabelFormItemViewModel>();
 builder.Services.AddTransient<DateTimeFormItemViewModel>();
 builder.Services.AddTransient<TimeOnlyFormItemViewModel>();
 builder.Services.AddTransient<DataGridFormItemViewModel>();
+
+builder.Services.AddTransient<ActionsViewModel>();
+builder.Services.AddTransient<AddOrUpdateFormItemEventViewModel>();
+builder.Services.AddTransient<EventsViewModel>();
+builder.Services.AddTransient<FormItemEventsListViewModel>();
+builder.Services.AddTransient<AddOrUpdateEventActionViewModel>();
+builder.Services.AddTransient<EventActionsListViewModel>();
 
 builder.Services.AddMudServices(config =>
 {
@@ -310,5 +322,92 @@ void LoadLanguage(string languageShortName)
     {
         ShortName = languageShortName,
         Value = "Other Component"
+    });
+
+
+    BaseViewModel.AppendLanguage("Event", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Event"
+    });
+    BaseViewModel.AppendLanguage("Events", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Events"
+    });
+    BaseViewModel.AppendLanguage("VariableName", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Variable Name"
+    });
+    BaseViewModel.AppendLanguage("Key", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Key"
+    });
+    BaseViewModel.AppendLanguage("Click", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Click"
+    });
+    BaseViewModel.AppendLanguage("TextChanged", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "TextChanged"
+    });
+    BaseViewModel.AppendLanguage("ItemSelected", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "ItemSelected"
+    });
+    BaseViewModel.AppendLanguage("Job", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Job"
+    });
+    BaseViewModel.AppendLanguage("Action", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Action"
+    });
+    BaseViewModel.AppendLanguage("Actions", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Actions"
+    });
+    BaseViewModel.AppendLanguage("Actions", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Actions"
+    });
+    BaseViewModel.AppendLanguage("OpenDialog", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "OpenDialog"
+    });
+    BaseViewModel.AppendLanguage("OpenResponsibleDialog", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "OpenResponsibleDialog"
+    });
+    BaseViewModel.AppendLanguage("OpenPage", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "OpenPage"
+    });
+    BaseViewModel.AppendLanguage("CallExternalApi", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "CallExternalApi"
+    });
+    BaseViewModel.AppendLanguage("SendResult", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "SendResult"
+    });
+    BaseViewModel.AppendLanguage("Close", new LanguageContract()
+    {
+        ShortName = languageShortName,
+        Value = "Close"
     });
 }
