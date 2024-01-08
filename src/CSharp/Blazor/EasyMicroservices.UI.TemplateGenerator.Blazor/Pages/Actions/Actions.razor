@@ -1,0 +1,51 @@
+﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
+@using MudBlazor
+@using TemplateGenerators.GeneratedServices
+@inject ActionsViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudSelect @bind-Value="viewModel.SelectedAction" Label="@viewModel.GetLanguage("Action")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
+        @foreach (var item in viewModel.Actions)
+        {
+            <MudSelectItem Value="@item">@viewModel.GetLanguage(@item.JobName)</MudSelectItem>
+        }
+    </MudSelect>
+</MudRTLProvider>
+
+@code {
+    public ActionsViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.BindSpecifiedPropertyChanged(nameof(ActionsViewModel.SelectedAction), () =>
+        {
+            SelectedActionChanged.InvokeAsync(SelectedAction);
+        });
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    [Category(CategoryTypes.FormComponent.Data)]
+    public ActionContract SelectedAction
+    {
+        get
+        {
+            return ViewModel.SelectedAction;
+        }
+        set
+        {
+            ViewModel.SelectedAction = value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<ActionContract> SelectedActionChanged { get; set; }
+}

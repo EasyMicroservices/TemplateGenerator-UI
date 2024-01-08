@@ -1,0 +1,47 @@
+﻿@using EasyMicroservices.UI.BlazorComponents
+@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
+@using MudBlazor
+@using TemplateGenerators.GeneratedServices
+@inject AddOrUpdateEventActionViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudStack>
+        <Actions @ref="actionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
+        <EventActionsList/>
+    </MudStack>
+</MudRTLProvider>
+
+@code {
+    public AddOrUpdateEventActionViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.BindPropertyChanged(StateHasChanged);
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    [Category(CategoryTypes.FormComponent.Data)]
+    public ActionContract SelectedAction
+    {
+        get
+        {
+            return viewModel.SelectedAction;
+        }
+        set
+        {
+            viewModel.SelectedAction = value;
+        }
+    }
+
+    public Actions actionsView;
+}

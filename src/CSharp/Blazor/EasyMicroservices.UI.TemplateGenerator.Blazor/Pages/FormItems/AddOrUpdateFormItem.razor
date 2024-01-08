@@ -1,6 +1,7 @@
 ﻿@page "/AddOrUpdateFormItem"
 @using EasyMicroservices.UI.BlazorComponents
 @using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Events
 @using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
 @using MudBlazor
@@ -13,6 +14,7 @@
         <MudPaper Class="pa-4">
             <MudStack Spacing="4">
                 <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Title" Label="@viewModel.GetLanguage("Title")" Variant="Variant.Text"></MudTextField>
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.VariableName" Label="@viewModel.GetLanguage("VariableName")" Variant="Variant.Text"></MudTextField>
                 <MudSelect Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Type" Label="@viewModel.GetLanguage("Type")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
                     @foreach (ItemType item in Enum.GetValues<ItemType>())
                     {
@@ -30,31 +32,37 @@
                 </MudSelect>
             </MudStack>
         </MudPaper>
-        <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
-            <ToolBarContent>
-                <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
-                    <MudFab Disabled="@viewModel.IsDisabled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddFormItemItemDialog()" />
-                    @viewModel.GetLanguage("FormItems")
-                </MudStack>
-            </ToolBarContent>
-            <Columns>
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowUp" OnClick="(arg) => viewModel.MoveUp(context.Item)" />
-                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.MoveDown(context.Item)" />
-                    </CellTemplate>
-                </TemplateColumn>
-                <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
-                <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetLanguage("Title")" />
-                <PropertyColumn Property="x => x.Type" />
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemItemDialog(context.Item)" />
-                        <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
-                    </CellTemplate>
-                </TemplateColumn>
-            </Columns>
-        </MudDataGrid>
+        <MudTabs Elevation="4" Rounded="true" KeepPanelsAlive="true" Color="@Color.Primary">
+            <MudTabPanel Text="@viewModel.GetLanguage("FormItems")">
+                <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
+                    <ToolBarContent>
+                        <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
+                            <MudFab Disabled="@viewModel.IsDisabled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddFormItemItemDialog()" />
+                        </MudStack>
+                    </ToolBarContent>
+                    <Columns>
+                        <TemplateColumn CellClass="d-flex justify-end">
+                            <CellTemplate>
+                                <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowUp" OnClick="(arg) => viewModel.OrderingFormItems.MoveUp(context.Item)" />
+                                <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.OrderingFormItems.MoveDown(context.Item)" />
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
+                        <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetLanguage("Title")" />
+                        <PropertyColumn Property="x => x.Type" />
+                        <TemplateColumn CellClass="d-flex justify-end">
+                            <CellTemplate>
+                                <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemItemDialog(context.Item)" />
+                                <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudTabPanel>
+            <MudTabPanel Text="@viewModel.GetLanguage("Events")">
+                <FormItemEventsList />
+            </MudTabPanel>
+        </MudTabs>
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SaveCommand.Execute(null)">
             @if (viewModel.IsBusy)
             {
@@ -152,7 +160,7 @@
                 viewModel.FormItems.Add(contract);
                 addDialog.CloseDialog();
                 Snackbar.Add("ثبت با موفقیت انجام شد.", Severity.Success);
-                viewModel.ReOrderIndexes();
+                viewModel.OrderingFormItems.ReOrderIndexes();
                 StateHasChanged();
             };
         });
@@ -171,7 +179,7 @@
                 viewModel.FormItems.Insert(index, item);
                 addDialog.CloseDialog();
                 Snackbar.Add("ویرایش با موفقیت انجام شد.", Severity.Success);
-                viewModel.ReOrderIndexes();
+                viewModel.OrderingFormItems.ReOrderIndexes();
                 StateHasChanged();
             };
         });
@@ -188,7 +196,7 @@
         viewModel.OnDelete = (o) =>
         {
             deleteDialog.CloseDialog();
-            viewModel.ReOrderIndexes();
+            viewModel.OrderingFormItems.ReOrderIndexes();
             StateHasChanged();
             Snackbar.Add(viewModel.GetLanguage("DeleteForm_Message"), Severity.Success);
         };

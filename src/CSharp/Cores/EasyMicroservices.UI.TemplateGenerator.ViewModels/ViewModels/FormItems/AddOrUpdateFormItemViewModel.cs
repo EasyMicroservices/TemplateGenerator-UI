@@ -1,5 +1,6 @@
 ﻿using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.Cores.Commands;
+using EasyMicroservices.UI.TemplateGenerator.Helpers;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.Json;
@@ -14,6 +15,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
         _noParentFormItemClient = noParentFormItemClient;
         SaveCommand = new TaskRelayCommand(this, Save);
         DeleteCommand = new RelayCommand<FormItemContract>(Delete);
+        OrderingFormItems = new IndexOrderingCollection<FormItemContract>(FormItems, (x, i) => x.Index = i);
         Clear();
     }
 
@@ -60,7 +62,10 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
     }
 
     public ObservableCollection<FormItemContract> FormItems { get; set; } = new ObservableCollection<FormItemContract>();
+    public ObservableCollection<EventContract> Events { get; set; } = new ObservableCollection<EventContract>();
     public ObservableCollection<FormItemContract> NoParentFormItems { get; set; } = new ObservableCollection<FormItemContract>();
+
+    public IndexOrderingCollection<FormItemContract> OrderingFormItems { get; }
 
     FormItemContract _SelectedNoParentFormItem;
     public FormItemContract SelectedNoParentFormItem
@@ -90,6 +95,17 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
         {
             _Title = value;
             OnPropertyChanged(nameof(Title));
+        }
+    }
+
+    string _VariableName;
+    public string VariableName
+    {
+        get => _VariableName;
+        set
+        {
+            _VariableName = value;
+            OnPropertyChanged(nameof(VariableName));
         }
     }
 
@@ -196,39 +212,6 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
                 SelectedNoParentFormItem = NoParentFormItems.FirstOrDefault(x => x.Id == UpdateFormItemContract.PrimaryFormItemId);
         }
     }
-
-    public void ReOrderIndexes()
-    {
-        int index = 0;
-        foreach (var item in FormItems)
-        {
-            item.Index = ++index;
-        }
-        OnPropertyChanged(nameof(FormItems));
-    }
-
-    public void MoveUp(FormItemContract formItemContract)
-    {
-        var index = FormItems.IndexOf(formItemContract);
-        index--;
-        if (index < 0)
-            index = 0;
-        FormItems.Remove(formItemContract);
-        FormItems.Insert(index, formItemContract);
-        ReOrderIndexes();
-    }
-
-    public void MoveDown(FormItemContract formItemContract)
-    {
-        var index = FormItems.IndexOf(formItemContract);
-        index++;
-        if (index >= FormItems.Count)
-            index = FormItems.Count - 1;
-        FormItems.Remove(formItemContract);
-        FormItems.Insert(index, formItemContract);
-        ReOrderIndexes();
-    }
-
 
     public void Clear()
     {
