@@ -1,9 +1,9 @@
-﻿using EasyMicroservices.UI.Cores;
+﻿using EasyMicroservices.ServiceContracts;
+using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.Cores.Commands;
 using EasyMicroservices.UI.Cores.Interfaces;
 using System.Collections.ObjectModel;
-using TemplateGenerators.GeneratedServices;
-
+using FormItemEventContract = TemplateGenerators.GeneratedServices.FormItemEventContract;
 namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Events;
 
 public class FormItemEventsListViewModel : BaseViewModel
@@ -53,5 +53,24 @@ public class FormItemEventsListViewModel : BaseViewModel
         //{
         //    FormItemEvents.Add(item);
         //}
+    }
+
+    public MessageContract DoDelete(FormItemEventContract item)
+    {
+        FormItemEvents.Remove(item);
+        return true;
+    }
+
+    public MessageContract Add(FormItemEventContract item)
+    {
+        FormItemEvents.Add(item);
+        return true;
+    }
+
+    public MessageContract Update(FormItemEventContract oldItem, FormItemEventContract newItem)
+    {
+        FormItemEvents.Remove(oldItem);
+        FormItemEvents.Insert(0, newItem);
+        return true;
     }
 }

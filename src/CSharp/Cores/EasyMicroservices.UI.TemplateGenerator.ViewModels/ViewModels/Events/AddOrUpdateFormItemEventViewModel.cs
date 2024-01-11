@@ -3,6 +3,7 @@ using EasyMicroservices.UI.Cores;
 using EasyMicroservices.UI.Cores.Commands;
 using EasyMicroservices.UI.Cores.Interfaces;
 using EasyMicroservices.UI.TemplateGenerator.Helpers;
+using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions;
 using System.Collections.ObjectModel;
 using TemplateGenerators.GeneratedServices;
 
@@ -18,11 +19,11 @@ public class AddOrUpdateFormItemEventViewModel : BaseViewModel
         _actionClient = actionClient;
         RefreshCommand = new TaskRelayCommand(this, Refresh);
         RefreshCommand.Execute(null);
-        IndexOrderingActions = new IndexOrderingCollection<FormItemEventActionContract>(EventActions, (x, i) => x.OrderIndex = i);
     }
 
     public IAsyncCommand RefreshCommand { get; set; }
 
+    public EventActionsListViewModel EventActionsListViewModel { get; set; }
     readonly ActionClient _actionClient;
     EventContract _SelectedEvent;
     public EventContract SelectedEvent
@@ -40,8 +41,6 @@ public class AddOrUpdateFormItemEventViewModel : BaseViewModel
     public int Index { get; set; } = 0;
     public int Length { get; set; } = 50;
     public int TotalCount { get; set; }
-    public ObservableCollection<FormItemEventActionContract> EventActions { get; set; } = new ObservableCollection<FormItemEventActionContract>();
-    public IndexOrderingCollection<FormItemEventActionContract> IndexOrderingActions { get; }
 
     public async Task Refresh()
     {
@@ -60,13 +59,36 @@ public class AddOrUpdateFormItemEventViewModel : BaseViewModel
         //}
     }
 
+    public void Clear()
+    {
+        SelectedEvent = null;
+        EventActionsListViewModel?.Children?.Clear();
+    }
+
+    public void SelectForUpdate(FormItemEventContract update)
+    {
+        EventActionsListViewModel.Children.Clear();
+        foreach (var item in update.FormItemEventActions)
+        {
+            EventActionsListViewModel.Children.Add(item);
+        }
+        EventActionsListViewModel.OnPropertyChanged(nameof(EventActionsListViewModel.Children));
+    }
+
+    public FormItemEventContract GetFormItemEvent(FormItemEventContract update)
+    {
+        var result = GetFormItemEvent();
+        result.Id = update.Id;
+        return result;
+    }
+
     public FormItemEventContract GetFormItemEvent()
     {
         return new FormItemEventContract()
         {
             Event = SelectedEvent,
             EventId = SelectedEvent.Id,
-            FormItemEventActions = EventActions,
+            FormItemEventActions = EventActionsListViewModel.Children.ToList(),
         };
     }
 }

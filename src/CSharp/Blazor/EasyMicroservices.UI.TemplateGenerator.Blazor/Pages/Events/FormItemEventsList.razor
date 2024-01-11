@@ -3,6 +3,7 @@
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using MudBlazor
+@using System.Collections.ObjectModel
 @using TemplateGenerators.GeneratedServices
 @inject FormItemEventsListViewModel viewModel;
 
@@ -14,35 +15,24 @@
             </MudStack>
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Event.Name" Title="@viewModel.GetLanguage("Event")" />
-            @*             <TemplateColumn CellClass="d-flex justify-end">
-            <CellTemplate>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemItemDialog(context.Item)" />
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
-            </CellTemplate>
-            </TemplateColumn> *@
+            <PropertyColumn Property="x => x.Event.Name" Title="@viewModel.GetInnerTranslatedByKey("Event")" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateFormItemEventDialog(context.Item)" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
+                </CellTemplate>
+            </TemplateColumn>
         </Columns>
     </MudDataGrid>
-    <BaseDialog @ref="addDialog">
-        <TitleContent>
-            <MudText Typo="Typo.h6">
-                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Add
-            </MudText>
-        </TitleContent>
+
+
+    <SaveChangeBaseDialog TItem="FormItemEventContract" @ref="addOrUpdateDialog" BindViewModel="@viewModel">
         <DialogContent>
             <AddOrUpdateFormItemEvent @ref="AddOrUpdateFormItemEventView" />
         </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="() => addDialog.CloseDialog()">
-                @viewModel.GetLanguage("Cancel")
-            </MudButton>
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="()=>Save()">
-                <MudText>
-                    @viewModel.GetLanguage("Save")
-                </MudText>
-            </MudButton>
-        </DialogActions>
-    </BaseDialog>
+    </SaveChangeBaseDialog>
+
+    <DeleteBaseDialog TItem="FormItemEventContract" @ref="deleteDialog" BindViewModel="@viewModel" />
 </MudRTLProvider>
 
 @code {
@@ -52,6 +42,12 @@
         {
             return viewModel;
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.BindPropertyChanged(StateHasChanged);
+        base.OnInitialized();
     }
 
     [Parameter]
@@ -69,29 +65,34 @@
     }
 
     AddOrUpdateFormItemEvent AddOrUpdateFormItemEventView;
-    BaseDialog addDialog;
+    SaveChangeBaseDialog<FormItemEventContract> addOrUpdateDialog;
+    DeleteBaseDialog<FormItemEventContract> deleteDialog;
+
     void ShowAddFormItemEventDialog()
     {
-        addDialog.ShowDialog(() =>
+        addOrUpdateDialog.ShowSaveDialog(null, (i) =>
         {
-            // AddOrUpdateFormItemEventView.ViewModel.Clear();
-            // AddOrUpdateFormItemEventView.ViewModel.OnSuccess = (contract) =>
-            // {
-            //     viewModel.FormItems.Add(contract);
-            //     addDialog.CloseDialog();
-            //     Snackbar.Add("ثبت با موفقیت انجام شد.", Severity.Success);
-            //     viewModel.OrderingFormItems.ReOrderIndexes();
-            //     StateHasChanged();
-            // };
+            return viewModel.Add(AddOrUpdateFormItemEventView.ViewModel.GetFormItemEvent());
+        }, () =>
+        {
+            AddOrUpdateFormItemEventView?.ViewModel?.Clear();
         });
     }
 
-    void Save()
+    void ShowUpdateFormItemEventDialog(FormItemEventContract formItemEvent)
     {
-        if (AddOrUpdateFormItemEventView.SelectedEvent != null)
+        addOrUpdateDialog.ShowSaveDialog(formItemEvent, (i) =>
         {
-            ViewModel.FormItemEvents.Add(AddOrUpdateFormItemEventView.ViewModel.GetFormItemEvent());
-            addDialog.CloseDialog();
-        }
+            return viewModel.Update(i, AddOrUpdateFormItemEventView.ViewModel.GetFormItemEvent(i));
+        }, () =>
+        {
+            AddOrUpdateFormItemEventView.ViewModel.SelectedEvent = AddOrUpdateFormItemEventView.EventsView.ViewModel.Events.FirstOrDefault(x => x.Id == formItemEvent.EventId);
+            AddOrUpdateFormItemEventView.ViewModel.SelectForUpdate(formItemEvent);
+        });
+    }
+
+    void ShowDeleteDialog(FormItemEventContract formItemEvent)
+    {
+        deleteDialog.ShowDeleteDialog(formItemEvent, viewModel.DoDelete);
     }
 }

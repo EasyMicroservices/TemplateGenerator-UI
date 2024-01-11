@@ -106,7 +106,7 @@ namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Forms
         public string GetTitle(FormItemContract formItemContract)
         {
             if (formItemContract.Title.IsNullOrEmpty())
-                return formItemContract.PrimaryFormItem?.Title ?? GetLanguage("NoName!");
+                return formItemContract.PrimaryFormItem?.Title ?? GetInnerTranslatedByKey("NoName!");
             return formItemContract.Title;
         }
 

@@ -17,28 +17,28 @@
         <ToolBarContent>
             <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
                 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddDialog()" />
-                <MudText Typo="Typo.h6" mar>@viewModel.GetLanguage("NoParentFormItems")</MudText>
+                <MudText Typo="Typo.h6" mar>@viewModel.GetInnerTranslatedByKey("NoParentFormItems")</MudText>
                 </MudStack>
 
                 <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="@viewModel.GetLanguage("Search")" Adornment="Adornment.Start" Immediate="true"
+                <MudTextField @bind-Value="_searchString" Placeholder="@viewModel.GetInnerTranslatedByKey("Search")" Adornment="Adornment.Start" Immediate="true"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                 <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SearchCommand.Execute(null)">
                     @if (viewModel.IsBusy)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">@viewModel.GetLanguage("Processing")</MudText>
+                    <MudText Class="ms-2">@viewModel.GetInnerTranslatedByKey("Processing")</MudText>
                 }
                 else
                 {
-                    <MudText>@viewModel.GetLanguage("Search")</MudText>
+                    <MudText>@viewModel.GetInnerTranslatedByKey("Search")</MudText>
                 }
             </MudButton>
         </ToolBarContent>
         <Columns>
             <SelectColumn T="FormItemContract" />
-            <PropertyColumn Property="x => x.Id" Title="@viewModel.GetLanguage("Id")" />
-            <PropertyColumn Property="x => x.Title" Title="@viewModel.GetLanguage("Title")" />
+            <PropertyColumn Property="x => x.Id" Title="@viewModel.GetInnerTranslatedByKey("Id")" />
+            <PropertyColumn Property="x => x.Title" Title="@viewModel.GetInnerTranslatedByKey("Title")" />
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateDialog(context.Item)" />
@@ -63,26 +63,26 @@
     <BaseDialog @ref="deleteDialog">
         <TitleContent>
             <MudText>
-                @viewModel.GetLanguage("DeleteNoParentFormItem_Title")
+                @viewModel.GetInnerTranslatedByKey("DeleteNoParentFormItem_Title")
             </MudText>
         </TitleContent>
         <DialogContent>
-            @viewModel.GetLanguage("DeleteQuestion_Content")
+            @viewModel.GetInnerTranslatedByKey("DeleteQuestion_Content")
         </DialogContent>
         <DialogActions>
             @if (!viewModel.IsBusy)
             {
-                <MudButton OnClick="() => deleteDialog.CloseDialog()">@viewModel.GetLanguage("Cancel")</MudButton>
+                <MudButton OnClick="() => deleteDialog.CloseDialog()">@viewModel.GetInnerTranslatedByKey("Cancel")</MudButton>
             }
             <MudButton Color="Color.Error" Variant="Variant.Filled" Disabled="viewModel.IsBusy" OnClick="()=>DoDelete()">
                 @if (viewModel.IsBusy)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">@viewModel.GetLanguage("Deleting")</MudText>
+                    <MudText Class="ms-2">@viewModel.GetInnerTranslatedByKey("Deleting")</MudText>
                 }
                 else
                 {
-                    <MudText>@viewModel.GetLanguage("Delete")</MudText>
+                    <MudText>@viewModel.GetInnerTranslatedByKey("Delete")</MudText>
                 }
             </MudButton>
         </DialogActions>
@@ -120,15 +120,15 @@
 
     void ShowUpdateDialog(FormItemContract noParentFormItemContract)
     {
-        _AddOrUpdateTitle = @viewModel.GetLanguage("UpdateNoParentFormItem_Title");
-        _AddOrUpdatedMessage = @viewModel.GetLanguage("UpdateNoParentFormItem_Message");
+        _AddOrUpdateTitle = @viewModel.GetInnerTranslatedByKey("UpdateNoParentFormItem_Title");
+        _AddOrUpdatedMessage = @viewModel.GetInnerTranslatedByKey("UpdateNoParentFormItem_Message");
         ShowAddOrUpdateDialog(noParentFormItemContract);
     }
 
     void ShowAddDialog()
     {
-        _AddOrUpdateTitle = @viewModel.GetLanguage("AddNoParentFormItem_Title");
-        _AddOrUpdatedMessage = @viewModel.GetLanguage("AddNoParentFormItem_Message");
+        _AddOrUpdateTitle = @viewModel.GetInnerTranslatedByKey("AddNoParentFormItem_Title");
+        _AddOrUpdatedMessage = @viewModel.GetInnerTranslatedByKey("AddNoParentFormItem_Message");
         ShowAddOrUpdateDialog(null);
     }
 
@@ -161,7 +161,7 @@
         {
             deleteDialog.CloseDialog();
             StateHasChanged();
-            Snackbar.Add(@viewModel.GetLanguage("DeleteNoParentFormItem_Message"), Severity.Success);
+            Snackbar.Add(@viewModel.GetInnerTranslatedByKey("DeleteNoParentFormItem_Message"), Severity.Success);
         };
         viewModel.DeleteCommand.Execute(viewModel.SelectedFormItemContract);
     }
