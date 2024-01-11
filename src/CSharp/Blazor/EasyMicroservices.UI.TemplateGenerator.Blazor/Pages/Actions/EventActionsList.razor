@@ -4,6 +4,7 @@
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using MudBlazor
+@using System.Collections.ObjectModel
 @using TemplateGenerators.GeneratedServices
 @inject EventActionsListViewModel viewModel;
 
@@ -13,7 +14,7 @@
             <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
                 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddActionDialog()" />
                 <MudText Typo="Typo.h6" mar>
-                    @viewModel.GetLanguage("Actions")
+                    @viewModel.GetInnerTranslatedByKey("Actions")
                 </MudText>
             </MudStack>
         </ToolBarContent>
@@ -24,8 +25,8 @@
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.IndexOrderingActions.MoveDown(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.OrderIndex" Title="@viewModel.GetLanguage("Index")" />
-            <PropertyColumn Property="x => viewModel.GetLanguage(x.Action.JobName)" Title="@viewModel.GetLanguage("Job")" />
+            <PropertyColumn Property="x => x.OrderIndex" Title="@viewModel.GetInnerTranslatedByKey("Index")" />
+            <PropertyColumn Property="x => viewModel.GetInnerTranslatedByKey(x.Action.JobName)" Title="@viewModel.GetInnerTranslatedByKey("Job")" />
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateDialog(context.Item)" />
@@ -34,48 +35,14 @@
             </TemplateColumn>
         </Columns>
     </MudDataGrid>
-    <BaseDialog @ref="addOrUpdateActionDialog">
-        <TitleContent>
-            <MudText Typo="Typo.h6">
-                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" />
-                Add
-            </MudText>
-        </TitleContent>
+
+    <SaveChangeBaseDialog TItem="FormItemEventActionContract" @ref="addOrUpdateActionDialog" BindViewModel="@viewModel">
         <DialogContent>
             <AddOrUpdateEventAction @ref="AddOrUpdateEventActionView" />
         </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="() => addOrUpdateActionDialog.CloseDialog()">
-                @viewModel.GetLanguage("Cancel")
-            </MudButton>
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="()=>Save()">
-                <MudText>
-                    @viewModel.GetLanguage("Save")
-                </MudText>
-            </MudButton>
-        </DialogActions>
-    </BaseDialog>
+    </SaveChangeBaseDialog>
 
-    <BaseDialog @ref="deleteDialog">
-        <TitleContent>
-            <MudText>
-                @viewModel.GetLanguage("DeleteAction_Title")
-            </MudText>
-        </TitleContent>
-        <DialogContent>
-            @viewModel.GetLanguage("DeleteQuestion_Content")
-        </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="() => deleteDialog.CloseDialog()">
-                @viewModel.GetLanguage("Cancel")
-            </MudButton>
-            <MudButton Color="Color.Error" Variant="Variant.Filled" Disabled="viewModel.IsBusy" OnClick="DoDelete">
-                <MudText>
-                    @viewModel.GetLanguage("Delete")
-                </MudText>
-            </MudButton>
-        </DialogActions>
-    </BaseDialog>
+    <DeleteBaseDialog TItem="FormItemEventActionContract" @ref="deleteDialog" BindViewModel="@viewModel"/>
 </MudRTLProvider>
 
 @code {
@@ -93,48 +60,40 @@
         base.OnInitialized();
     }
 
-    BaseDialog addOrUpdateActionDialog;
-    BaseDialog deleteDialog;
+    SaveChangeBaseDialog<FormItemEventActionContract> addOrUpdateActionDialog;
+    DeleteBaseDialog<FormItemEventActionContract> deleteDialog;
     AddOrUpdateEventAction AddOrUpdateEventActionView;
     Actions actionsView;
 
     void ShowAddActionDialog()
     {
-        ViewModel.CurrentFormItemAction = currentUpdate = null;
-        addOrUpdateActionDialog.ShowDialog();
-    }
-
-    void Save()
-    {
-        if (AddOrUpdateEventActionView.ViewModel.SelectedAction != null)
+        addOrUpdateActionDialog.ShowSaveDialog(null, (i) =>
         {
-            if (currentUpdate != null)
-                viewModel.Children.Remove(currentUpdate);
             viewModel.Children.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction());
-            addOrUpdateActionDialog.CloseDialog();
-        }
+            return true;
+        });
     }
 
     void ShowDeleteDialog(FormItemEventActionContract item)
     {
-        ViewModel.SelectedFormItemEventAction = item;
-        deleteDialog.ShowDialog();
+        deleteDialog.ShowDeleteDialog(item, (i) =>
+        {
+            viewModel.Children.Remove(item);
+            return true;
+        });
     }
 
-    void DoDelete()
-    {
-        viewModel.DoDeleteSelected();
-        deleteDialog.CloseDialog();
-    }
-
-    FormItemEventActionContract currentUpdate;
     void ShowUpdateDialog(FormItemEventActionContract item)
     {
-        currentUpdate = item;
-        addOrUpdateActionDialog.ShowDialog(() =>
+        addOrUpdateActionDialog.ShowSaveDialog(item, (i) =>
         {
-            AddOrUpdateEventActionView.ViewModel.CurrentFormItemAction = item;
-            AddOrUpdateEventActionView.ViewModel.SelectedAction = AddOrUpdateEventActionView.actionsView.ViewModel.Actions.FirstOrDefault(x => x.Id == item.ActionId);
+            viewModel.Children.Remove(item);
+            viewModel.Children.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction());
+            return true;
+        }, () =>
+        {
+            AddOrUpdateEventActionView.ViewModel.SelectedAction = AddOrUpdateEventActionView.ActionsView.ViewModel.Actions.FirstOrDefault(x => x.Id == item.ActionId);
+            AddOrUpdateEventActionView.ViewModel.SelectForUpdate(item);
         });
     }
 }

@@ -11,9 +11,9 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
     /// </summary>
     public AddOrUpdateEventActionViewModel()
     {
-        IndexOrderingActions = new IndexOrderingCollection<FormItemEventActionContract>(Children, (x, i) => x.OrderIndex = i);
     }
 
+    public EventActionsListViewModel EventActionsListViewModel { get; set; }
 
     ActionContract _SelectedAction;
     public ActionContract SelectedAction
@@ -28,36 +28,11 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
         }
     }
 
-    FormItemEventActionContract _CurrentFormItemAction;
-    public FormItemEventActionContract CurrentFormItemAction
-    {
-        get
-        {
-            return _CurrentFormItemAction;
-        }
-        set
-        {
-            _CurrentFormItemAction = value;
-            if (value != null)
-            {
-                Children.Clear();
-                foreach (var item in value.Children)
-                {
-                    Children.Add(item);
-                }
-                IndexOrderingActions.ReOrderIndexes();
-            }
-            OnPropertyChanged(nameof(CurrentFormItemAction));
-        }
-    }
-
     public FormItemEventActionContract SelectedFormItemEventAction { get; set; }
 
     public int Index { get; set; } = 0;
     public int Length { get; set; } = 50;
     public int TotalCount { get; set; }
-    public ObservableCollection<FormItemEventActionContract> Children { get; set; } = new ObservableCollection<FormItemEventActionContract>();
-    public IndexOrderingCollection<FormItemEventActionContract> IndexOrderingActions { get; }
 
     public async Task Refresh()
     {
@@ -75,13 +50,27 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
         //    Actions.Add(form);
         //}
     }
-
-    public void DoDeleteSelected()
+    public void Clear()
     {
-        if (SelectedFormItemEventAction != null)
+        SelectedAction = null;
+        EventActionsListViewModel?.Children?.Clear();
+    }
+
+    public void SelectForUpdate(FormItemEventActionContract update)
+    {
+        EventActionsListViewModel.Children.Clear();
+        foreach (var item in update.Children)
         {
-            Children.Remove(SelectedFormItemEventAction);
+            EventActionsListViewModel.Children.Add(item);
         }
+        EventActionsListViewModel.OnPropertyChanged(nameof(EventActionsListViewModel.Children));
+    }
+
+    public FormItemEventActionContract GetEventAction(FormItemEventActionContract update)
+    {
+        var result = GetEventAction();
+        //result.Id = update.Id;
+        return result;
     }
 
     public FormItemEventActionContract GetEventAction()
@@ -90,7 +79,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
         {
             Action = SelectedAction,
             ActionId = SelectedAction.Id,
-            Children = Children.ToList(),
+            Children = EventActionsListViewModel.Children.ToList(),
         };
     }
 }

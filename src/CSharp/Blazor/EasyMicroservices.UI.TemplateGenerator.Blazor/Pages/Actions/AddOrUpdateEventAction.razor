@@ -9,8 +9,8 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
-        <Actions @ref="actionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
-        <EventActionsList/>
+        <Actions @ref="ActionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
+        <EventActionsList @ref="EventActionsList" />
     </MudStack>
 </MudRTLProvider>
 
@@ -43,5 +43,16 @@
         }
     }
 
-    public Actions actionsView;
+    EventActionsList _eventActionsList;
+    EventActionsList EventActionsList
+    {
+        get => _eventActionsList;
+        set
+        {
+            _eventActionsList = value;
+            ViewModel.EventActionsListViewModel = _eventActionsList.ViewModel;
+        }
+    }
+
+    public Actions ActionsView;
 }

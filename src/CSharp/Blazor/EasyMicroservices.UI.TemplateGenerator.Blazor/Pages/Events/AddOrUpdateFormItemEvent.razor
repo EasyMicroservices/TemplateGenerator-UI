@@ -4,60 +4,15 @@
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using MudBlazor
+@using System.Collections.ObjectModel
 @using TemplateGenerators.GeneratedServices
 @inject AddOrUpdateFormItemEventViewModel viewModel;
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
-        <Events @bind-SelectedEvent="@viewModel.SelectedEvent" />
-        <MudDataGrid T="FormItemEventActionContract" Items="viewModel.EventActions">
-            <ToolBarContent>
-                <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddActionDialog()" />
-                    <MudText Typo="Typo.h6" mar>
-                        @viewModel.GetLanguage("Actions")
-                    </MudText>
-                </MudStack>
-            </ToolBarContent>
-            <Columns>
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowUp" OnClick="(arg) => viewModel.IndexOrderingActions.MoveUp(context.Item)" />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.IndexOrderingActions.MoveDown(context.Item)" />
-                    </CellTemplate>
-                </TemplateColumn>
-                <PropertyColumn Property="x => x.OrderIndex" Title="@viewModel.GetLanguage("Index")" />
-                <PropertyColumn Property="x => viewModel.GetLanguage(x.Action.JobName)" Title="@viewModel.GetLanguage("Job")" />
-                @* <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateDialog(context.Item)" />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
-                    </CellTemplate>
-                </TemplateColumn> *@
-            </Columns>
-        </MudDataGrid>
+        <Events @ref="EventsView" @bind-SelectedEvent="@viewModel.SelectedEvent" />
+        <EventActionsList @ref="EventActionsList" />
     </MudStack>
-    <BaseDialog @ref="addActionDialog">
-        <TitleContent>
-            <MudText Typo="Typo.h6">
-                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" />
-                Add
-            </MudText>
-        </TitleContent>
-        <DialogContent>
-            <AddOrUpdateEventAction @ref="AddOrUpdateEventActionView" />
-        </DialogContent>
-        <DialogActions>
-            <MudButton OnClick="() => addActionDialog.CloseDialog()">
-                @viewModel.GetLanguage("Cancel")
-            </MudButton>
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="()=>SaveAction()">
-                <MudText>
-                    @viewModel.GetLanguage("Save")
-                </MudText>
-            </MudButton>
-        </DialogActions>
-    </BaseDialog>
 </MudRTLProvider>
 
 @code {
@@ -75,6 +30,7 @@
         {
             SelectedActionChanged.InvokeAsync(SelectedEvent);
         });
+        ViewModel.BindPropertyChanged(StateHasChanged);
         base.OnInitialized();
     }
 
@@ -95,19 +51,30 @@
     [Parameter]
     public EventCallback<EventContract> SelectedActionChanged { get; set; }
 
-    BaseDialog addActionDialog;
+    //BaseDialog addActionDialog;
     AddOrUpdateEventAction AddOrUpdateEventActionView;
-    void ShowAddActionDialog()
+    public Events EventsView;
+    EventActionsList _eventActionsList;
+    EventActionsList EventActionsList
     {
-        addActionDialog.ShowDialog();
-    }
-
-    void SaveAction()
-    {
-        if (AddOrUpdateEventActionView.SelectedAction != null)
+        get => _eventActionsList;
+        set
         {
-            viewModel.EventActions.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction());
-            addActionDialog.CloseDialog();
+            _eventActionsList = value;
+            ViewModel.EventActionsListViewModel = _eventActionsList.ViewModel;
         }
     }
+    // void ShowAddActionDialog()
+    // {
+    //     addActionDialog.ShowDialog();
+    // }
+
+    // void SaveAction()
+    // {
+    //     if (AddOrUpdateEventActionView.SelectedAction != null)
+    //     {
+    //         viewModel.EventActions.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction());
+    //         addActionDialog.CloseDialog();
+    //     }
+    // }
 }

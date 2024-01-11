@@ -6,10 +6,10 @@
 @inject ActionsViewModel viewModel;
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
-    <MudSelect @bind-Value="viewModel.SelectedAction" Label="@viewModel.GetLanguage("Action")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
+    <MudSelect @bind-Value="viewModel.SelectedAction" Label="@viewModel.GetInnerTranslatedByKey("Action")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
         @foreach (var item in viewModel.Actions)
         {
-            <MudSelectItem Value="@item">@viewModel.GetLanguage(@item.JobName)</MudSelectItem>
+            <MudSelectItem Value="@item">@viewModel.GetInnerTranslatedByKey(@item.JobName)</MudSelectItem>
         }
     </MudSelect>
 </MudRTLProvider>

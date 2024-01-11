@@ -13,18 +13,18 @@
     <MudStack>
         <MudPaper Class="pa-4">
             <MudStack Spacing="4">
-                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Title" Label="@viewModel.GetLanguage("Title")" Variant="Variant.Text"></MudTextField>
-                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.VariableName" Label="@viewModel.GetLanguage("VariableName")" Variant="Variant.Text"></MudTextField>
-                <MudSelect Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Type" Label="@viewModel.GetLanguage("Type")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Title" Label="@viewModel.GetInnerTranslatedByKey("Title")" Variant="Variant.Text"></MudTextField>
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.VariableName" Label="@viewModel.GetInnerTranslatedByKey("VariableName")" Variant="Variant.Text"></MudTextField>
+                <MudSelect Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.Type" Label="@viewModel.GetInnerTranslatedByKey("Type")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary">
                     @foreach (ItemType item in Enum.GetValues<ItemType>())
                     {
                         if ((int)item < 6)
                             continue;
-                        <MudSelectItem Value="@item">@viewModel.GetLanguage(@item.ToString())</MudSelectItem>
+                        <MudSelectItem Value="@item">@viewModel.GetInnerTranslatedByKey(@item.ToString())</MudSelectItem>
                     }
                 </MudSelect>
-                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.DefaultValue" Label="@viewModel.GetLanguage("DefaultValue")" Variant="Variant.Text"></MudTextField>
-                <MudSelect @bind-Value="viewModel.SelectedNoParentFormItem" Label="@viewModel.GetLanguage("OtherComponent")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary" Clearable>
+                <MudTextField Disabled="@viewModel.IsDisabled" @bind-Value="viewModel.DefaultValue" Label="@viewModel.GetInnerTranslatedByKey("DefaultValue")" Variant="Variant.Text"></MudTextField>
+                <MudSelect @bind-Value="viewModel.SelectedNoParentFormItem" Label="@viewModel.GetInnerTranslatedByKey("OtherComponent")" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary" Clearable>
                     @foreach (var item in viewModel.NoParentFormItems)
                     {
                         <MudSelectItem Value="@item">@item.Title</MudSelectItem>
@@ -33,7 +33,7 @@
             </MudStack>
         </MudPaper>
         <MudTabs Elevation="4" Rounded="true" KeepPanelsAlive="true" Color="@Color.Primary">
-            <MudTabPanel Text="@viewModel.GetLanguage("FormItems")">
+            <MudTabPanel Text="@viewModel.GetInnerTranslatedByKey("FormItems")">
                 <MudDataGrid T="FormItemContract" Items="viewModel.FormItems">
                     <ToolBarContent>
                         <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
@@ -47,8 +47,8 @@
                                 <MudIconButton Disabled="@viewModel.IsDisabled" Size="@Size.Small" Icon="@Icons.Material.Outlined.KeyboardArrowDown" OnClick="(arg) => viewModel.OrderingFormItems.MoveDown(context.Item)" />
                             </CellTemplate>
                         </TemplateColumn>
-                        <PropertyColumn Property="x => x.Index" Title="@viewModel.GetLanguage("Index")" />
-                        <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetLanguage("Title")" />
+                        <PropertyColumn Property="x => x.Index" Title="@viewModel.GetInnerTranslatedByKey("Index")" />
+                        <PropertyColumn Property="x => viewModel.GetTitle(x)" Title="@viewModel.GetInnerTranslatedByKey("Title")" />
                         <PropertyColumn Property="x => x.Type" />
                         <TemplateColumn CellClass="d-flex justify-end">
                             <CellTemplate>
@@ -59,7 +59,7 @@
                     </Columns>
                 </MudDataGrid>
             </MudTabPanel>
-            <MudTabPanel Text="@viewModel.GetLanguage("Events")">
+            <MudTabPanel Text="@viewModel.GetInnerTranslatedByKey("Events")">
                 <FormItemEventsList />
             </MudTabPanel>
         </MudTabs>
@@ -67,15 +67,15 @@
             @if (viewModel.IsBusy)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                <MudText Class="ms-2">@viewModel.GetLanguage("Saving")</MudText>
+                <MudText Class="ms-2">@viewModel.GetInnerTranslatedByKey("Saving")</MudText>
             }
             else
             {
-                <MudText>@viewModel.GetLanguage("Save")</MudText>
+                <MudText>@viewModel.GetInnerTranslatedByKey("Save")</MudText>
             }
         </MudButton> 
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Shower" Color="Color.Info" OnClick="(arg) => previewDialog.ShowDialog()">
-            <MudText>@viewModel.GetLanguage("ShowPreview")</MudText>
+            <MudText>@viewModel.GetInnerTranslatedByKey("ShowPreview")</MudText>
         </MudButton>
     </MudStack>
     <BaseDialog @ref="addDialog">
@@ -91,26 +91,26 @@
     <BaseDialog @ref="deleteDialog">
         <TitleContent>
             <MudText>
-                @viewModel.GetLanguage("DeleteFormItem_Title")
+                    @viewModel.GetInnerTranslatedByKey("DeleteFormItem_Title")
             </MudText>
         </TitleContent>
         <DialogContent>
-            @viewModel.GetLanguage("DeleteQuestion_Content")
+            @viewModel.GetInnerTranslatedByKey("DeleteQuestion_Content")
         </DialogContent>
         <DialogActions>
             @if (!viewModel.IsBusy)
             {
-                <MudButton OnClick="() => deleteDialog.CloseDialog()">@viewModel.GetLanguage("Cancel")</MudButton>
+                <MudButton OnClick="() => deleteDialog.CloseDialog()">@viewModel.GetInnerTranslatedByKey("Cancel")</MudButton>
             }
             <MudButton Color="Color.Error" Variant="Variant.Filled" Disabled="viewModel.IsBusy" OnClick="()=>DoDelete()">
                 @if (viewModel.IsBusy)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">@viewModel.GetLanguage("Deleting")</MudText>
+                    <MudText Class="ms-2">@viewModel.GetInnerTranslatedByKey("Deleting")</MudText>
                 }
                 else
                 {
-                    <MudText>@viewModel.GetLanguage("Delete")</MudText>
+                    <MudText>@viewModel.GetInnerTranslatedByKey("Delete")</MudText>
                 }
             </MudButton>
         </DialogActions>
@@ -118,14 +118,14 @@
     <BaseDialog @ref="previewDialog">
         <TitleContent>
             <MudText>
-                @viewModel.GetLanguage("PreviewFormItem_Title")
+                @viewModel.GetInnerTranslatedByKey("PreviewFormItem_Title")
             </MudText>
         </TitleContent>
         <DialogContent>
             <FormItemListGenerator FormItems="@viewModel.FormItems"></FormItemListGenerator>
         </DialogContent>
         <DialogActions>
-            <MudButton OnClick="() => previewDialog.CloseDialog()">@viewModel.GetLanguage("Ok")</MudButton>
+            <MudButton OnClick="() => previewDialog.CloseDialog()">@viewModel.GetInnerTranslatedByKey("Ok")</MudButton>
         </DialogActions>
     </BaseDialog>
 </MudRTLProvider>
@@ -198,7 +198,7 @@
             deleteDialog.CloseDialog();
             viewModel.OrderingFormItems.ReOrderIndexes();
             StateHasChanged();
-            Snackbar.Add(viewModel.GetLanguage("DeleteForm_Message"), Severity.Success);
+            Snackbar.Add(viewModel.GetInnerTranslatedByKey("DeleteForm_Message"), Severity.Success);
         };
         viewModel.DeleteCommand.Execute(viewModel.DeleteFormItemContract);
     }
