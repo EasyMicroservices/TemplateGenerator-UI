@@ -90,7 +90,9 @@
             }
         default:
             {
-                throw new NotSupportedException($"Form item type: {viewModel.FormItem?.Type} not supported!");
+                if (viewModel.FormItem != null)
+                    throw new NotSupportedException($"Form item type: {viewModel.FormItem?.Type} not supported!");
+                break;
             }
     }
 </MudRTLProvider>
