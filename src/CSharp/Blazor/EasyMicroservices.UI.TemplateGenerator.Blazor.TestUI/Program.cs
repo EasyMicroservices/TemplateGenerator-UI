@@ -58,6 +58,9 @@ builder.Services.AddTransient<EventsViewModel>();
 builder.Services.AddTransient<FormItemEventsListViewModel>();
 builder.Services.AddTransient<AddOrUpdateEventActionViewModel>();
 builder.Services.AddTransient<EventActionsListViewModel>();
+builder.Services.AddTransient<NavMenuFormItemViewModel>();
+builder.Services.AddTransient<NavMenuGroupFormItemViewModel>();
+builder.Services.AddTransient<NavMenuLinkFormItemViewModel>();
 
 builder.Services.AddMudServices(config =>
 {

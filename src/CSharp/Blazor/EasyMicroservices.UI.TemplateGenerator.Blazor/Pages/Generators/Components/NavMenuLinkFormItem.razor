@@ -1,0 +1,36 @@
+﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
+@using MudBlazor
+@using System.Text
+@using TemplateGenerators.GeneratedServices
+@inject NavMenuLinkFormItemViewModel viewModel;
+
+<MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
+    <MudNavLink Href="@viewModel.FormItem.DefaultValue">
+        @viewModel.FormItem.Title"
+        @foreach (var formItem in viewModel.FormItem?.Items?.OrderBy(x => x.Index))
+        {
+            <FormItemSingleItemGenerator FormItem="@formItem" />
+        }
+    </MudNavLink>
+</MudRTLProvider>
+
+@code {
+    public NavMenuLinkFormItemViewModel ViewModel
+    {
+        get
+        {
+            return viewModel;
+        }
+    }
+
+    [Parameter]
+    [Category("Behavior")]
+    public FormItemContract FormItem
+    {
+        set
+        {
+            viewModel.FormItem = value;
+        }
+    }
+}
