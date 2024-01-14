@@ -8,7 +8,7 @@
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudDataGrid T="FormItemContract" Items="@Items()">
         <Columns>
-            @foreach (var column in viewModel.FormItem?.Items?.Where(x => x.Type == ItemType.Column).OrderBy(x => x.Index))
+            @foreach (var column in viewModel.FormItem?.Items?.OrderBy(x => x.Index))
             {
                 <TemplateColumn Title="@column.Title">
                     
