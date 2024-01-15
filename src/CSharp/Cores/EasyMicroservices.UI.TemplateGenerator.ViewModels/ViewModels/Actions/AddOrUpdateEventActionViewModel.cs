@@ -69,7 +69,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
     public FormItemEventActionContract GetEventAction(FormItemEventActionContract update)
     {
         var result = GetEventAction();
-        //result.Id = update.Id;
+        result.Id = update.Id;
         return result;
     }
 
