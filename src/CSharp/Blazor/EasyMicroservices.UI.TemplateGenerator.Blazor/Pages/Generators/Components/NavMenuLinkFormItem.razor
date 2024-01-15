@@ -7,7 +7,7 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudNavLink Href="@viewModel.FormItem.DefaultValue">
-        @viewModel.FormItem.Title"
+        @viewModel.FormItem.Title
         @foreach (var formItem in viewModel.FormItem?.Items?.OrderBy(x => x.Index))
         {
             <FormItemSingleItemGenerator FormItem="@formItem" />

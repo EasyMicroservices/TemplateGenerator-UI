@@ -88,7 +88,7 @@
         addOrUpdateActionDialog.ShowSaveDialog(item, (i) =>
         {
             viewModel.Children.Remove(item);
-            viewModel.Children.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction());
+            viewModel.Children.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction(i));
             return true;
         }, () =>
         {
