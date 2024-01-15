@@ -60,7 +60,7 @@
                 </MudDataGrid>
             </MudTabPanel>
             <MudTabPanel Text="@viewModel.GetInnerTranslatedByKey("Events")">
-                <FormItemEventsList />
+                <FormItemEventsList @ref="formItemEventsList" />
             </MudTabPanel>
         </MudTabs>
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SaveCommand.Execute(null)">
@@ -137,11 +137,12 @@
             return viewModel;
         }
     }
+
     BaseDialog addDialog;
     BaseDialog deleteDialog; 
     BaseDialog previewDialog; 
     AddOrUpdateFormItem AddOrUpdateFormItemView { get; set; }
-
+    FormItemEventsList formItemEventsList { get; set; }
     protected override Task OnInitializedAsync()
     {
         viewModel.BindPropertyChanged(StateHasChanged);
@@ -155,6 +156,7 @@
         addDialog.ShowDialog(() =>
         {
             AddOrUpdateFormItemView.ViewModel.Clear();
+            viewModel.FormItemEvents = formItemEventsList.FormItemEvents;
             AddOrUpdateFormItemView.ViewModel.OnSuccess = (contract) =>
             {
                 viewModel.FormItems.Add(contract);
@@ -172,6 +174,8 @@
         {
             AddOrUpdateFormItemView.ViewModel.Clear();
             AddOrUpdateFormItemView.ViewModel.UpdateFormItemContract = formItemContract;
+            if (formItemContract.Events != null)
+                viewModel.FormItemEvents = formItemEventsList.FormItemEvents = new System.Collections.ObjectModel.ObservableCollection<FormItemEventContract>(formItemContract.Events);
             AddOrUpdateFormItemView.ViewModel.OnSuccess = (item) =>
             {
                 var index = viewModel.FormItems.IndexOf(formItemContract);

@@ -64,6 +64,19 @@
         }
     }
 
+    public ObservableCollection<FormItemEventContract> FormItemEvents
+    {
+        get
+        {
+            return ViewModel.FormItemEvents;
+        }
+        set
+        {
+            ViewModel.FormItemEvents = value;
+            StateHasChanged();
+        }
+    }
+
     AddOrUpdateFormItemEvent AddOrUpdateFormItemEventView;
     SaveChangeBaseDialog<FormItemEventContract> addOrUpdateDialog;
     DeleteBaseDialog<FormItemEventContract> deleteDialog;

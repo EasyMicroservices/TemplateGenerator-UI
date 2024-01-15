@@ -62,7 +62,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
     }
 
     public ObservableCollection<FormItemContract> FormItems { get; set; } = new ObservableCollection<FormItemContract>();
-    public ObservableCollection<EventContract> Events { get; set; } = new ObservableCollection<EventContract>();
+    public ObservableCollection<FormItemEventContract> FormItemEvents { get; set; } = new ObservableCollection<FormItemEventContract>();
     public ObservableCollection<FormItemContract> NoParentFormItems { get; set; } = new ObservableCollection<FormItemContract>();
 
     public IndexOrderingCollection<FormItemContract> OrderingFormItems { get; }
@@ -149,6 +149,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = FormItems,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
+            Events = FormItemEvents
         };
     }
 
@@ -161,6 +162,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = JsonSerializer.Deserialize<List<CreateFormItemContract>>(JsonSerializer.Serialize(FormItems)),
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
+            Events = FormItemEvents
         };
     }
 
@@ -174,6 +176,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = FormItems,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
+            Events = FormItemEvents
         };
     }
 
