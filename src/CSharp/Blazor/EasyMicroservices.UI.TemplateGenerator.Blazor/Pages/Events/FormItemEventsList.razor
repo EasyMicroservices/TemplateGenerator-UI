@@ -64,6 +64,8 @@
         }
     }
 
+    [Parameter]
+    [Category("Behavior")]
     public ObservableCollection<FormItemEventContract> FormItemEvents
     {
         get
@@ -72,10 +74,17 @@
         }
         set
         {
+            if (ViewModel.FormItemEvents == value)
+                return;
             ViewModel.FormItemEvents = value;
             StateHasChanged();
+            FormItemEventsChanged.InvokeAsync(value);
         }
     }
+
+
+    [Parameter]
+    public EventCallback<ObservableCollection<FormItemEventContract>> FormItemEventsChanged { get; set; }
 
     AddOrUpdateFormItemEvent AddOrUpdateFormItemEventView;
     SaveChangeBaseDialog<FormItemEventContract> addOrUpdateDialog;
