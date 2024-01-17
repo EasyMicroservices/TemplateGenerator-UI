@@ -1,5 +1,6 @@
 ﻿@using EasyMicroservices.UI.BlazorComponents
 @using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.FormItems
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
@@ -9,7 +10,8 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
-        <Actions @ref="ActionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
+        <Actions @bind-SelectedAction="@viewModel.SelectedAction" />
+        <FormItems @bind-SelectedFormItem="@viewModel.SelectedFormItem"/>
         <EventActionsList @ref="EventActionsList" />
     </MudStack>
 </MudRTLProvider>
@@ -29,20 +31,6 @@
         base.OnInitialized();
     }
 
-    [Parameter]
-    [Category(CategoryTypes.FormComponent.Data)]
-    public ActionContract SelectedAction
-    {
-        get
-        {
-            return viewModel.SelectedAction;
-        }
-        set
-        {
-            viewModel.SelectedAction = value;
-        }
-    }
-
     EventActionsList _eventActionsList;
     EventActionsList EventActionsList
     {
@@ -53,6 +41,4 @@
             ViewModel.EventActionsListViewModel = _eventActionsList.ViewModel;
         }
     }
-
-    public Actions ActionsView;
 }
