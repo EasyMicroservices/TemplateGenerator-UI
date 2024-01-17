@@ -96,6 +96,8 @@
         {
             var actions = await AddOrUpdateEventActionView.ActionsView.ViewModel.OnGetActionsComeplete();
             AddOrUpdateEventActionView.ViewModel.SelectedAction = actions.FirstOrDefault(x => x.Id == item.ActionId);
+            var formItems = await AddOrUpdateEventActionView.FormItemsView.ViewModel.OnGetFormItemsComeplete();
+            AddOrUpdateEventActionView.ViewModel.SelectedFormItem = formItems.FirstOrDefault(x => x.Id == item.FormItemId);
             AddOrUpdateEventActionView.ViewModel.SelectForUpdate(item);
         });
     }

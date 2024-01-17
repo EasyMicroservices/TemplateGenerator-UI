@@ -10,8 +10,8 @@
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
-        <Actions @bind-SelectedAction="@viewModel.SelectedAction" />
-        <FormItems @bind-SelectedFormItem="@viewModel.SelectedFormItem"/>
+        <Actions @ref="ActionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
+        <FormItems @ref="FormItemsView" @bind-SelectedFormItem="@viewModel.SelectedFormItem" />
         <EventActionsList @ref="EventActionsList" />
     </MudStack>
 </MudRTLProvider>
@@ -41,4 +41,7 @@
             ViewModel.EventActionsListViewModel = _eventActionsList.ViewModel;
         }
     }
+
+    public Actions ActionsView;
+    public FormItems FormItemsView;
 }
