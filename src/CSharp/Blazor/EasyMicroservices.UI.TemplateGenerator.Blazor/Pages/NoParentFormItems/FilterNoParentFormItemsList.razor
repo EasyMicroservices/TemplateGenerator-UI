@@ -129,8 +129,23 @@
         return data;
     }
 
-    void ShowUpdateDialog(FormItemContract noParentFormItemContract)
+    async Task ShowUpdateDialog(FormItemContract noParentFormItemContract)
     {
+        if (noParentFormItemContract != null)
+        {
+            try
+            {
+                viewModel.IsBusy = true;
+                noParentFormItemContract = await noParentFormItemClient.GetByIdAsync(new Int64GetByIdRequestContract()
+                    {
+                        Id = noParentFormItemContract.Id
+                    }).AsCheckedResult(x => x.Result);
+            }
+            finally
+            {
+                viewModel.IsBusy = false;
+            }
+        }
         _AddOrUpdateTitle = @viewModel.GetInnerTranslatedByKey("UpdateNoParentFormItem_Title");
         _AddOrUpdatedMessage = @viewModel.GetInnerTranslatedByKey("UpdateNoParentFormItem_Message");
         ShowAddOrUpdateDialog(noParentFormItemContract);
@@ -145,23 +160,8 @@
 
     void ShowAddOrUpdateDialog(FormItemContract noParentFormItemContract)
     {
-        addDialog.ShowDialog(async () =>
+        addDialog.ShowDialog(() =>
         {
-            if (noParentFormItemContract != null)
-            {
-                try
-                {
-                    viewModel.IsBusy = true;
-                    noParentFormItemContract = await noParentFormItemClient.GetByIdAsync(new Int64GetByIdRequestContract()
-                        {
-                            Id = noParentFormItemContract.Id
-                        }).AsCheckedResult(x => x.Result);
-                }
-                finally
-                {
-                    viewModel.IsBusy = false;
-                }
-            }
             var vm = addOrUpdateFormItemView.ViewModel;
             vm.SaveCommand = new TaskRelayCommand(vm, vm.SaveNotParentToService);
             vm.Clear();
