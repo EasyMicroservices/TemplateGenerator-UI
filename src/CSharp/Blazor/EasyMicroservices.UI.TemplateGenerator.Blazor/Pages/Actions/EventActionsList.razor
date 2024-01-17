@@ -94,11 +94,14 @@
             return Task.FromResult((MessageContract)true);
         }, async () =>
         {
-            var actions = await AddOrUpdateEventActionView.ActionsView.ViewModel.OnGetActionsComeplete();
+            Console.WriteLine($"{item.ActionId}-{item.FormItemId}");
+            var actions = await AddOrUpdateEventActionView.ActionsView.ViewModel.OnGetActionsComplete();
             AddOrUpdateEventActionView.ViewModel.SelectedAction = actions.FirstOrDefault(x => x.Id == item.ActionId);
-            var formItems = await AddOrUpdateEventActionView.FormItemsView.ViewModel.OnGetFormItemsComeplete();
+            var formItems = await AddOrUpdateEventActionView.FormItemsView.ViewModel.OnGetFormItemsComplete();
             AddOrUpdateEventActionView.ViewModel.SelectedFormItem = formItems.FirstOrDefault(x => x.Id == item.FormItemId);
+            Console.WriteLine($"Selected: {AddOrUpdateEventActionView.ViewModel.SelectedAction?.Id}-{AddOrUpdateEventActionView.ViewModel.SelectedFormItem?.Id}");
             AddOrUpdateEventActionView.ViewModel.SelectForUpdate(item);
+            StateHasChanged();
         });
     }
 }

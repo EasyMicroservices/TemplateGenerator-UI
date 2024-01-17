@@ -60,7 +60,7 @@ public class ActionsViewModel : BaseViewModel
 
     TaskCompletionSource OnGetActions = new TaskCompletionSource();
 
-    public async Task<List<ActionContract>> OnGetActionsComeplete()
+    public async Task<List<ActionContract>> OnGetActionsComplete()
     {
         await Task.WhenAny(OnGetActions.Task, Task.Delay(TimeSpan.FromSeconds(5)));
         return Actions.ToList();
