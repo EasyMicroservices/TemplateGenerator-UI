@@ -13,6 +13,17 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
 
     public EventActionsListViewModel EventActionsListViewModel { get; set; }
 
+    string _EffectiveVariableName;
+    public string EffectiveVariableName
+    {
+        get => _EffectiveVariableName;
+        set
+        {
+            _EffectiveVariableName = value;
+            OnPropertyChanged(nameof(EffectiveVariableName));
+        }
+    }
+
     ActionContract _SelectedAction;
     public ActionContract SelectedAction
     {
@@ -70,6 +81,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
 
     public void SelectForUpdate(FormItemEventActionContract update)
     {
+        EffectiveVariableName = update?.InfluencedToVariableName;
         EventActionsListViewModel.Children.Clear();
         foreach (var item in update.Children)
         {
@@ -92,6 +104,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
             Action = SelectedAction,
             ActionId = SelectedAction.Id,
             FormItemId = SelectedFormItem?.Id,
+            InfluencedToVariableName = EffectiveVariableName,
             Children = EventActionsListViewModel.Children.ToList(),
         };
     }

@@ -12,6 +12,8 @@
     <MudStack>
         <Actions @ref="ActionsView" @bind-SelectedAction="@viewModel.SelectedAction" />
         <FormItems @ref="FormItemsView" @bind-SelectedFormItem="@viewModel.SelectedFormItem" />
+        <MudTextField @bind-Value="@viewModel.EffectiveVariableName" Placeholder="@viewModel.GetInnerTranslatedByKey("EffectiveVariableName")"
+                      AdornmentIcon="@Icons.Material.Filled.DataObject" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         <EventActionsList @ref="EventActionsList" />
     </MudStack>
 </MudRTLProvider>
