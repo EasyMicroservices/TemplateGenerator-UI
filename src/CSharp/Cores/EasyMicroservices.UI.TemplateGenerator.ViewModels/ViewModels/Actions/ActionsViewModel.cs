@@ -55,5 +55,14 @@ public class ActionsViewModel : BaseViewModel
         {
             Actions.Add(form);
         }
+        OnGetActions.TrySetResult();
+    }
+
+    TaskCompletionSource OnGetActions = new TaskCompletionSource();
+
+    public async Task<List<ActionContract>> OnGetActionsComeplete()
+    {
+        await Task.WhenAny(OnGetActions.Task, Task.Delay(TimeSpan.FromSeconds(5)));
+        return Actions.ToList();
     }
 }

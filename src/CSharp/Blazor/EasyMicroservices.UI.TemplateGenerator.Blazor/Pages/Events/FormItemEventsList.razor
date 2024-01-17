@@ -103,12 +103,13 @@
 
     void ShowUpdateFormItemEventDialog(FormItemEventContract formItemEvent)
     {
-        addOrUpdateDialog.ShowSaveDialog(formItemEvent, (i) =>
+        addOrUpdateDialog.ShowSaveDialogAsync(formItemEvent, (i) =>
         {
-            return viewModel.Update(i, AddOrUpdateFormItemEventView.ViewModel.GetFormItemEvent(i));
-        }, () =>
+            return Task.FromResult(viewModel.Update(i, AddOrUpdateFormItemEventView.ViewModel.GetFormItemEvent(i)));
+        },async () =>
         {
-            AddOrUpdateFormItemEventView.ViewModel.SelectedEvent = AddOrUpdateFormItemEventView.EventsView.ViewModel.Events.FirstOrDefault(x => x.Id == formItemEvent.EventId);
+            var events = await AddOrUpdateFormItemEventView.EventsView.ViewModel.OnGetActionsComeplete();
+            AddOrUpdateFormItemEventView.ViewModel.SelectedEvent = events.FirstOrDefault(x => x.Id == formItemEvent.EventId);
             AddOrUpdateFormItemEventView.ViewModel.SelectForUpdate(formItemEvent);
         });
     }

@@ -6,6 +6,8 @@
 @using MudBlazor
 @using System.Collections.ObjectModel
 @using TemplateGenerators.GeneratedServices
+@using MessageContract = EasyMicroservices.ServiceContracts.MessageContract;
+
 @inject EventActionsListViewModel viewModel;
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
@@ -85,14 +87,15 @@
 
     void ShowUpdateDialog(FormItemEventActionContract item)
     {
-        addOrUpdateActionDialog.ShowSaveDialog(item, (i) =>
+        addOrUpdateActionDialog.ShowSaveDialogAsync(item, (i) =>
         {
             viewModel.Children.Remove(item);
             viewModel.Children.Add(AddOrUpdateEventActionView.ViewModel.GetEventAction(i));
-            return true;
-        }, () =>
+            return Task.FromResult((MessageContract)true);
+        }, async () =>
         {
-            AddOrUpdateEventActionView.ViewModel.SelectedAction = AddOrUpdateEventActionView.ActionsView.ViewModel.Actions.FirstOrDefault(x => x.Id == item.ActionId);
+            var actions = await AddOrUpdateEventActionView.ActionsView.ViewModel.OnGetActionsComeplete();
+            AddOrUpdateEventActionView.ViewModel.SelectedAction = actions.FirstOrDefault(x => x.Id == item.ActionId);
             AddOrUpdateEventActionView.ViewModel.SelectForUpdate(item);
         });
     }

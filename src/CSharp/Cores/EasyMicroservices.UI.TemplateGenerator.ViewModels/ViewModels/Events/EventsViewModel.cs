@@ -55,5 +55,14 @@ public class EventsViewModel : BaseViewModel
         {
             Events.Add(form);
         }
+        OnGetEvents.TrySetResult();
+    }
+
+    TaskCompletionSource OnGetEvents = new TaskCompletionSource();
+
+    public async Task<List<EventContract>> OnGetActionsComeplete()
+    {
+        await Task.WhenAny(OnGetEvents.Task, Task.Delay(TimeSpan.FromSeconds(5)));
+        return Events.ToList();
     }
 }
