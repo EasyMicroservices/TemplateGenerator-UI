@@ -46,11 +46,20 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
                 Title = value.Title;
                 Type = value.Type;
                 DefaultValue = value.DefaultValue;
+                FormItems.Clear();
                 if (value.Items != null)
                 {
                     foreach (var item in value.Items)
                     {
                         FormItems.Add(item);
+                    }
+                }
+                FormItemEvents.Clear();
+                if (value.Events != null)
+                {
+                    foreach (var item in value.Events)
+                    {
+                        FormItemEvents.Add(item);
                     }
                 }
                 if (value.PrimaryFormItemId.HasValue)
@@ -252,6 +261,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
         Title = "";
         DefaultValue = "";
         FormItems.Clear();
+        FormItemEvents.Clear();
         UpdateFormItemContract = default;
     }
 
