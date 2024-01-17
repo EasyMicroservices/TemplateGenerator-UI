@@ -46,6 +46,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
                 Title = value.Title;
                 Type = value.Type;
                 DefaultValue = value.DefaultValue;
+                VariableName = value.LocalVariableName;
                 FormItems.Clear();
                 if (value.Items != null)
                 {
@@ -157,6 +158,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Type = Type,
             Title = Title,
             Items = FormItems,
+            LocalVariableName = VariableName,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
             Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
@@ -170,6 +172,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Type = Type,
             Title = Title,
             Items = JsonSerializer.Deserialize<List<CreateFormItemContract>>(JsonSerializer.Serialize(FormItems)),
+            LocalVariableName = VariableName,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
             Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
@@ -184,6 +187,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Type = Type,
             Title = Title,
             Items = FormItems,
+            LocalVariableName = VariableName,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
             Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
@@ -260,6 +264,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
     {
         Title = "";
         DefaultValue = "";
+        VariableName = "";
         FormItems.Clear();
         FormItemEvents.Clear();
         UpdateFormItemContract = default;

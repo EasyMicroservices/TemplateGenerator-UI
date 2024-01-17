@@ -1,6 +1,4 @@
 ﻿using EasyMicroservices.UI.Cores;
-using EasyMicroservices.UI.TemplateGenerator.Helpers;
-using System.Collections.ObjectModel;
 using TemplateGenerators.GeneratedServices;
 
 namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions;
@@ -25,6 +23,19 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
                 return;
             _SelectedAction = value;
             OnPropertyChanged(nameof(SelectedAction));
+        }
+    }
+
+    FormItemContract _SelectedFormItem;
+    public FormItemContract SelectedFormItem
+    {
+        get => _SelectedFormItem;
+        set
+        {
+            if (_SelectedFormItem == value)
+                return;
+            _SelectedFormItem = value;
+            OnPropertyChanged(nameof(SelectedFormItem));
         }
     }
 
@@ -53,6 +64,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
     public void Clear()
     {
         SelectedAction = null;
+        SelectedFormItem = null;
         EventActionsListViewModel?.Children?.Clear();
     }
 
@@ -79,6 +91,7 @@ public class AddOrUpdateEventActionViewModel : BaseViewModel
         {
             Action = SelectedAction,
             ActionId = SelectedAction.Id,
+            FormItemId = SelectedFormItem?.Id,
             Children = EventActionsListViewModel.Children.ToList(),
         };
     }
