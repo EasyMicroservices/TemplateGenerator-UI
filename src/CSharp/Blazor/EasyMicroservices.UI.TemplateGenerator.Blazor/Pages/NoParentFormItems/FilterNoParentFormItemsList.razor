@@ -1,4 +1,5 @@
 ﻿@page "/FilterNoParentFormItemsList"
+@using EasyMicroservices.ServiceContracts
 @using EasyMicroservices.UI.BlazorComponents;
 @using EasyMicroservices.UI.Cores;
 @using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.FormItems;
@@ -8,6 +9,7 @@
 @using MudBlazor;
 @using global::TemplateGenerators.GeneratedServices;
 @inject FilterNoParentFormItemsListViewModel viewModel;
+@inject NoParentFormItemClient noParentFormItemClient;
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
@@ -41,7 +43,16 @@
             <PropertyColumn Property="x => x.Title" Title="@viewModel.GetInnerTranslatedByKey("Title")" />
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="(arg) => ShowUpdateDialog(context.Item)" />
+                    <MudIconButton Disabled="viewModel.IsBusy" Size="@Size.Small" OnClick="(arg) => ShowUpdateDialog(context.Item)">
+                        @if (viewModel.IsBusy)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Outlined.Edit"/>
+                        }
+                    </MudIconButton>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
@@ -134,8 +145,23 @@
 
     void ShowAddOrUpdateDialog(FormItemContract noParentFormItemContract)
     {
-        addDialog.ShowDialog(() =>
+        addDialog.ShowDialog(async () =>
         {
+            if (noParentFormItemContract != null)
+            {
+                try
+                {
+                    viewModel.IsBusy = true;
+                    noParentFormItemContract = await noParentFormItemClient.GetByIdAsync(new Int64GetByIdRequestContract()
+                        {
+                            Id = noParentFormItemContract.Id
+                        }).AsCheckedResult(x => x.Result);
+                }
+                finally
+                {
+                    viewModel.IsBusy = false;
+                }
+            }
             var vm = addOrUpdateFormItemView.ViewModel;
             vm.SaveCommand = new TaskRelayCommand(vm, vm.SaveNotParentToService);
             vm.Clear();
