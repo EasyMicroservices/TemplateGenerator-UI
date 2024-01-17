@@ -60,7 +60,7 @@ public class FormItemsViewModel : BaseViewModel
 
     TaskCompletionSource OnGetFormItems = new TaskCompletionSource();
 
-    public async Task<List<FormItemContract>> OnGetFormItemsComeplete()
+    public async Task<List<FormItemContract>> OnGetFormItemsComplete()
     {
         await Task.WhenAny(OnGetFormItems.Task, Task.Delay(TimeSpan.FromSeconds(5)));
         return FormItems.ToList();
