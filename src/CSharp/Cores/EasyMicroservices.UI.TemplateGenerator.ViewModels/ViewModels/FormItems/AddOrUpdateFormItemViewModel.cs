@@ -149,7 +149,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = FormItems,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
-            Events = FormItemEvents
+            Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
     }
 
@@ -162,7 +162,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = JsonSerializer.Deserialize<List<CreateFormItemContract>>(JsonSerializer.Serialize(FormItems)),
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
-            Events = FormItemEvents
+            Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
     }
 
@@ -176,7 +176,7 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             Title = Title,
             Items = FormItems,
             PrimaryFormItemId = SelectedNoParentFormItem?.Id,
-            Events = FormItemEvents
+            Events = CleanCollection(Clone(FormItemEvents.ToList()))
         };
     }
 
@@ -214,6 +214,37 @@ public class AddOrUpdateFormItemViewModel : BaseViewModel
             if (UpdateFormItemContract != null && UpdateFormItemContract.PrimaryFormItemId.HasValue)
                 SelectedNoParentFormItem = NoParentFormItems.FirstOrDefault(x => x.Id == UpdateFormItemContract.PrimaryFormItemId);
         }
+    }
+
+    T Clone<T>(T data)
+    {
+        return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(data));
+    }
+
+    ICollection<FormItemEventContract> CleanCollection(ICollection<FormItemEventContract> formItemEvents)
+    {
+        if (formItemEvents == null)
+            return formItemEvents;
+        foreach (var item in formItemEvents)
+        {
+            if (item.EventId > 0)
+                item.Event = null;
+            CleanCollection(item.FormItemEventActions);
+        }
+        return formItemEvents;
+    }
+
+    ICollection<FormItemEventActionContract> CleanCollection(ICollection<FormItemEventActionContract>  formItemEventActions)
+    {
+        if (formItemEventActions == null)
+            return formItemEventActions;
+        foreach (var item in formItemEventActions)
+        {
+            if (item.ActionId > 0)
+                item.Action = null;
+            CleanCollection(item.Children);
+        }
+        return formItemEventActions;
     }
 
     public void Clear()
