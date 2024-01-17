@@ -19,14 +19,16 @@
         <ToolBarContent>
             <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="5">
                 <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="(arg) => ShowAddDialog()" />
-                <MudText Typo="Typo.h6" mar>@viewModel.GetInnerTranslatedByKey("NoParentFormItems")</MudText>
-                </MudStack>
+                <MudText Typo="Typo.h6" mar>
+                    @viewModel.GetInnerTranslatedByKey("NoParentFormItems")
+                </MudText>
+            </MudStack>
 
-                <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="@viewModel.GetInnerTranslatedByKey("Search")" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SearchCommand.Execute(null)">
-                    @if (viewModel.IsBusy)
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="@viewModel.GetInnerTranslatedByKey("Search")" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary" Disabled="viewModel.IsBusy" OnClick="(arg) => viewModel.SearchCommand.Execute(null)">
+                @if (viewModel.IsBusy)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
                     <MudText Class="ms-2">@viewModel.GetInnerTranslatedByKey("Processing")</MudText>
@@ -50,7 +52,7 @@
                         }
                         else
                         {
-                            <MudIcon Icon="@Icons.Material.Outlined.Edit"/>
+                            <MudIcon Icon="@Icons.Material.Outlined.Edit" />
                         }
                     </MudIconButton>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="(arg) => ShowDeleteDialog(context.Item)" />
