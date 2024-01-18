@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using TemplateGenerators.GeneratedServices;
 
 namespace EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators;
-public class FormItemListGeneratorViewModel : BaseViewModel
+public class FormItemListGeneratorViewModel : BaseGeneratorViewModel
 {
     public FormItemListGeneratorViewModel()
     {

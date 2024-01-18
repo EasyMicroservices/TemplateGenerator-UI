@@ -9,7 +9,7 @@
 @implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
-    <FormItemListGenerator @ref="Control" FormItems="@viewModel.FormItem?.Items"/>
+    <FormItemListGenerator @ref="Control" FormItem="@viewModel.FormItem"/>
 </MudRTLProvider>
 
 @code {
@@ -34,6 +34,9 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        if (Parent != null && viewModel.FormItem != null)
+            ComponentPool.SetParent(Parent, this, viewModel.FormItem);
+
         if (viewModel.FormItem != null && Control != null)
         {
             Control.Parent = this;

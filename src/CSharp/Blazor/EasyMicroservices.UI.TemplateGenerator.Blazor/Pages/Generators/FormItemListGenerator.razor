@@ -35,10 +35,24 @@
         }
     }
 
+    [Parameter]
+    [Category("Behavior")]
+    public FormItemContract FormItem
+    {
+        set
+        {
+            viewModel.FormItem = value;
+            _ = viewModel.InitializeFormItems(value.Items);
+        }
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null))
+        if (Parent != null && viewModel.FormItem != null)
+            ComponentPool.SetParent(Parent, this, viewModel.FormItem);
+
+        if (Controls.Count == viewModel.FormItems.Count)
         {
             foreach (var item in Controls)
             {

@@ -40,7 +40,10 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null))
+        if (Parent != null && viewModel.FormItem != null)
+            ComponentPool.SetParent(Parent, this, viewModel.FormItem);
+
+        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null) && Controls.Count == viewModel.FormItem?.Items?.Count)
         {
             foreach (var item in Controls)
             {
