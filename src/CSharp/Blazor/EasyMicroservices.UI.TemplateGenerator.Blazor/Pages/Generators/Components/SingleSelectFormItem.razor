@@ -1,9 +1,11 @@
 ﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
 @inject SingleSelectFormItemViewModel viewModel;
+@implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudSelect T="FormItemContract" @bind-Value="@viewModel.SelectedValue" ToStringFunc="@converter" Label="@viewModel.FormItem?.Title" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" Clearable>
@@ -34,4 +36,5 @@
             viewModel.FormItem = value;
         }
     }
+    public IParentComponent Parent { get; set; }
 }

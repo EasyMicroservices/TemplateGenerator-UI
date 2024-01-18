@@ -1,91 +1,94 @@
 ﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators.Components
+@using EasyMicroservices.UI.TemplateGenerator.ProcessExecutor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
-@inject FormItemSingleItemGeneratorViewModel viewModel;
+@inject FormItemSingleItemGeneratorViewModel viewModel
+@implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     @switch (viewModel.FormItem?.Type)
     {
         case ItemType.TextBox:
             {
-                <TextBoxFormItem FormItem="@viewModel.FormItem" />
+                <TextBoxFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.OptionList:
             {
-                <SingleSelectFormItem FormItem="@viewModel.FormItem" />
+                <SingleSelectFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.DateOnly:
             {
-                <DateOnlyFormItem FormItem="@viewModel.FormItem" />
+                <DateOnlyFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.Card:
             {
-                <CardFormItem FormItem="@viewModel.FormItem" />
+                <CardFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.Button:
             {
-                <ButtonFormItem FormItem="@viewModel.FormItem" />
+                <ButtonFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.HorizontalStack:
             {
-                <HorizontalStackFormItem FormItem="@viewModel.FormItem" />
+                <HorizontalStackFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.VerticalStack:
             {
-                <VerticalStackFormItem FormItem="@viewModel.FormItem" />
+                <VerticalStackFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.CheckBox:
             {
-                <CheckBoxFormItem FormItem="@viewModel.FormItem" />
+                <CheckBoxFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.CheckList:
             {
-                <MultipleSelectFormItem FormItem="@viewModel.FormItem" />
+                <MultipleSelectFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.Label:
             {
-                <LabelFormItem FormItem="@viewModel.FormItem" />
+                <LabelFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.DateTime:
             {
-                <DateTimeFormItem FormItem="@viewModel.FormItem" />
+                <DateTimeFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.TimeOnly:
             {
-                <TimeOnlyFormItem FormItem="@viewModel.FormItem" />
+                <TimeOnlyFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.Table:
             {
-                <DataGridFormItem FormItem="@viewModel.FormItem" />
+                <DataGridFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.NavMenu:
             {
-                <NavMenuFormItem FormItem="@viewModel.FormItem" />
+                <NavMenuFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.NavMenuGroup:
             {
-                <NavMenuGroupFormItem FormItem="@viewModel.FormItem" />
+                <NavMenuGroupFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         case ItemType.NavMenuLink:
             {
-                <NavMenuLinkFormItem FormItem="@viewModel.FormItem" />
+                <NavMenuLinkFormItem @ref="Control" FormItem="@viewModel.FormItem" />
                 break;
             }
         default:
@@ -98,6 +101,7 @@
 </MudRTLProvider>
 
 @code {
+
     public FormItemSingleItemGeneratorViewModel ViewModel
     {
         get
@@ -115,4 +119,20 @@
             viewModel.FormItem = value;
         }
     }
+
+    IParentComponent _Control;
+    public IParentComponent Control
+    {
+        get
+        {
+            return _Control;
+        }
+        set
+        {
+            _Control = value;
+            value.Parent = this;
+        }
+    }
+
+    public IParentComponent Parent { get; set; }
 }

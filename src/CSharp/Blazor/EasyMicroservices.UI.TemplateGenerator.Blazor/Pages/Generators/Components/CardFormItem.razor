@@ -1,12 +1,14 @@
 ﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
 @inject CardFormItemViewModel viewModel;
+@implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
-    <FormItemListGenerator FormItems="@viewModel.FormItem?.Items"/>
+    <FormItemListGenerator @ref="Control" FormItems="@viewModel.FormItem?.Items"/>
 </MudRTLProvider>
 
 @code {
@@ -27,4 +29,20 @@
             viewModel.FormItem = value;
         }
     }
+
+    IParentComponent _Control;
+    public IParentComponent Control
+    {
+        get
+        {
+            return _Control;
+        }
+        set
+        {
+            _Control = value;
+            value.Parent = this;
+        }
+    }
+
+    public IParentComponent Parent { get; set; }
 }

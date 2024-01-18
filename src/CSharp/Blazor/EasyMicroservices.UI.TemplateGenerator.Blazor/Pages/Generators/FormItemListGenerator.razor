@@ -1,14 +1,16 @@
 ﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
 @inject FormItemListGeneratorViewModel viewModel;
+@implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudStack>
         @foreach (var formItem in viewModel.FormItems?.OrderBy(x => x.Index))
         {
-            <FormItemSingleItemGenerator FormItem="@formItem"/>
+            <FormItemSingleItemGenerator @ref="Control" FormItem="@formItem" />
         }
     </MudStack>
 </MudRTLProvider>
@@ -31,4 +33,20 @@
             _ = viewModel.InitializeFormItems(value);
         }
     }
+
+    IParentComponent _Control;
+    public IParentComponent Control
+    {
+        get
+        {
+            return _Control;
+        }
+        set
+        {
+            _Control = value;
+            value.Parent = this;
+        }
+    }
+
+    public IParentComponent Parent { get; set; }
 }
