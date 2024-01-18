@@ -1,15 +1,17 @@
 ﻿@using EasyMicroservices.UI.Cores
+@using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces
 @using EasyMicroservices.UI.TemplateGenerator.ViewModels.Generators.Components
 @using MudBlazor
 @using System.Text
 @using TemplateGenerators.GeneratedServices
 @inject NavMenuFormItemViewModel viewModel;
+@implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
     <MudNavMenu Rounded="true" Margin="Margin.Normal" Color="Color.Tertiary" Class="pa-2">
         @foreach (var formItem in viewModel.FormItem?.Items?.OrderBy(x => x.Index))
         {
-            <FormItemSingleItemGenerator FormItem="@formItem" />
+            <FormItemSingleItemGenerator @ref="Control" FormItem="@formItem" />
         }
     </MudNavMenu>
 </MudRTLProvider>
@@ -32,4 +34,20 @@
             viewModel.FormItem = value;
         }
     }
+
+    IParentComponent _Control;
+    public IParentComponent Control
+    {
+        get
+        {
+            return _Control;
+        }
+        set
+        {
+            _Control = value;
+            value.Parent = this;
+        }
+    }
+
+    public IParentComponent Parent { get; set; }
 }

@@ -1,8 +1,8 @@
 using EasyMicroservices.Domain.Contracts.Common;
 using EasyMicroservices.UI.BlazorComponents;
 using EasyMicroservices.UI.Cores;
-using EasyMicroservices.UI.TemplateGenerator.Blazor.Pages.Generators.Components;
-using EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI;
+using EasyMicroservices.UI.TemplateGenerator.Blazor.Interfaces;
+using EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI.Helpers;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Actions;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.Events;
 using EasyMicroservices.UI.TemplateGenerator.ViewModels.FormItems;
@@ -19,7 +19,7 @@ using TemplateGenerators.GeneratedServices;
 LoadLanguage("en-US");
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<EasyMicroservices.UI.TemplateGenerator.Blazor.TestUI.App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 string baseAddress = "http://localhost:1050";
 //string baseAddress = "https://templategenerator.adahmsay.ir/";
@@ -31,6 +31,7 @@ builder.Services.AddScoped(sp => new ActionClient(baseAddress, sp.GetService<Htt
 builder.Services.AddScoped(sp => new EventClient(baseAddress, sp.GetService<HttpClient>()));
 builder.Services.AddScoped(sp => new FormItemEventClient(baseAddress, sp.GetService<HttpClient>()));
 
+builder.Services.AddTransient<IParentComponent, ParentComponentHelper>();
 builder.Services.AddTransient<FilterFormsListViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormItemViewModel>();
@@ -137,8 +138,8 @@ void LoadLanguage(string languageShortName)
     {
         ShortName = languageShortName,
         Value = "Do you really want to delete these records? This process cannot be undone."
-    }); 
-    
+    });
+
     BaseViewModel.AppendLanguage("Forms", new LanguageContract()
     {
         ShortName = languageShortName,
