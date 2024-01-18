@@ -29,4 +29,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyMicroservices.UI.TemplateGenerator.ProcessExecutor\EasyMicroservices.UI.TemplateGenerator.ProcessExecutor.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <Authors>EasyMicroservices</Authors>
+    <IsPackable>true</IsPackable>
+    <Version>0.0.0.33</Version>
+    <Description>TemplateGenerator process maker core</Description>
+    <Copyright>EasyMicroservices@gmail.com</Copyright>
+    <PackageTags>component,microcomponent,ui,core,templategenerator,generator,template,form,formgenerator</PackageTags>
+    <PackageProjectUrl>https://github.com/EasyMicroservices/TemplateGenerator-UI</PackageProjectUrl>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="EasyMicroservices.ServiceContracts" Version="0.0.0.21" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Logics\" />
+  </ItemGroup>
+
+</Project>

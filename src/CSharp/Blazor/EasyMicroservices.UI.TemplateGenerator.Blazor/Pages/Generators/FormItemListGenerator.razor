@@ -4,6 +4,7 @@
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
 @inject FormItemListGeneratorViewModel viewModel;
+@inject IComponentPool ComponentPool;
 @implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
@@ -28,6 +29,10 @@
     [Category("Behavior")]
     public ICollection<FormItemContract> FormItems
     {
+        get
+        {
+            return viewModel.FormItems;
+        }
         set
         {
             _ = viewModel.InitializeFormItems(value);
@@ -45,6 +50,7 @@
         {
             _Control = value;
             value.Parent = this;
+            ComponentPool.SetParent(this, value);
         }
     }
 
