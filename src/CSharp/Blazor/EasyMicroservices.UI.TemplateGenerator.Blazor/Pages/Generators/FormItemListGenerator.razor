@@ -73,4 +73,12 @@
     }
 
     public IParentComponent Parent { get; set; }
+
+    public object ValueInstance
+    {
+        get
+        {
+            return viewModel.FormItem;
+        }
+    }
 }

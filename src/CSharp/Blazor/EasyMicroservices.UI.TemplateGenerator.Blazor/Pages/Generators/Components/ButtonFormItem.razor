@@ -11,7 +11,7 @@
     <MudButton Variant="Variant.Filled" Color="Color.Primary">@viewModel.FormItem?.Title</MudButton>
 </MudRTLProvider>
 
-@code {
+    @code {
     public ButtonFormItemViewModel ViewModel
     {
         get
@@ -24,13 +24,17 @@
     [Category("Behavior")]
     public FormItemContract FormItem
     {
-        get
-        {
-            return viewModel.FormItem;
-        }
         set
         {
             viewModel.FormItem = value;
+        }
+    }
+
+    public object ValueInstance
+    {
+        get
+        {
+            return viewModel.FormItem;
         }
     }
 
