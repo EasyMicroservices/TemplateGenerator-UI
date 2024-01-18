@@ -114,30 +114,22 @@
     [Category("Behavior")]
     public FormItemContract FormItem
     {
-        get
-        {
-            return viewModel.FormItem;
-        }
         set
         {
             viewModel.FormItem = value;
         }
     }
 
-    IParentComponent _Control;
-    public IParentComponent Control
+    protected override void OnAfterRender(bool firstRender)
     {
-        get
+        base.OnAfterRender(firstRender);
+        if (viewModel.FormItem != null && Control != null)
         {
-            return _Control;
-        }
-        set
-        {
-            _Control = value;
-            value.Parent = this;
-            ComponentPool.SetParent(this, value);
+            Control.Parent = this;
+            ComponentPool.SetParent(this, Control, viewModel.FormItem);
         }
     }
 
+    public IParentComponent Control { get; set; }
     public IParentComponent Parent { get; set; }
 }

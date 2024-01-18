@@ -8,8 +8,10 @@ public class ComponentPoolHelper : IComponentPool
 
     }
 
-    public void SetParent(IParentComponent parent, IParentComponent child)
+    public void SetParent<T>(IParentComponent parent, IParentComponent child, T model)
     {
-
+        Console.WriteLine($"Parent: {parent.ToString()}");
+        Console.WriteLine($"Child: {child.ToString()}");
+        Console.WriteLine($"model: {model.ToString()}");
     }
 }

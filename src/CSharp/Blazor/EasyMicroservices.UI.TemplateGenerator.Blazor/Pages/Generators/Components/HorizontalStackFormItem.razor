@@ -40,18 +40,26 @@
         }
     }
 
-    IParentComponent _Control;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null))
+        {
+            foreach (var item in Controls)
+            {
+                item.Parent = this;
+                ComponentPool.SetParent(this, item, ((FormItemSingleItemGenerator)item).ViewModel.FormItem);
+            }
+        }
+    }
+
+    List<IParentComponent> Controls = new List<IParentComponent>();
     public IParentComponent Control
     {
-        get
-        {
-            return _Control;
-        }
         set
         {
-            _Control = value;
-            value.Parent = this;
-            ComponentPool.SetParent(this, value);
+            if (!Controls.Contains(value))
+                Controls.Add(value);
         }
     }
 
