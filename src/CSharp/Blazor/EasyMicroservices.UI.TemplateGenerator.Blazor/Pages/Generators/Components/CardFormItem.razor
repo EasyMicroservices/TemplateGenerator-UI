@@ -46,4 +46,12 @@
 
     public IParentComponent Control { get; set; }
     public IParentComponent Parent { get; set; }
+
+    public object ValueInstance
+    {
+        get
+        {
+            return viewModel.FormItem;
+        }
+    }
 }

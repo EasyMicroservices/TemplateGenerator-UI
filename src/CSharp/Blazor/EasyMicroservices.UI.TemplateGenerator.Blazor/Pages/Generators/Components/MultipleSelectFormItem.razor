@@ -31,14 +31,18 @@
     [Category("Behavior")]
     public FormItemContract FormItem
     {
-        get
-        {
-            return viewModel.FormItem;
-        }
         set
         {
             viewModel.FormItem = value;
         }
     }
     public IParentComponent Parent { get; set; }
+
+    public object ValueInstance
+    {
+        get
+        {
+            return viewModel.FormItem;
+        }
+    }
 }
