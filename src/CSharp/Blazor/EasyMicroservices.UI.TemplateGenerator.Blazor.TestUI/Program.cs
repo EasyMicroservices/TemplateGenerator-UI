@@ -31,7 +31,7 @@ builder.Services.AddScoped(sp => new ActionClient(baseAddress, sp.GetService<Htt
 builder.Services.AddScoped(sp => new EventClient(baseAddress, sp.GetService<HttpClient>()));
 builder.Services.AddScoped(sp => new FormItemEventClient(baseAddress, sp.GetService<HttpClient>()));
 
-builder.Services.AddTransient<IParentComponent, ParentComponentHelper>();
+builder.Services.AddTransient<IComponentPool, ComponentPoolHelper>();
 builder.Services.AddTransient<FilterFormsListViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormViewModel>();
 builder.Services.AddTransient<AddOrUpdateFormItemViewModel>();

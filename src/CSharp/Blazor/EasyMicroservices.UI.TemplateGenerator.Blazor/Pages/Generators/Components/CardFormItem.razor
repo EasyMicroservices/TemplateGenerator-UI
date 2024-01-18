@@ -5,6 +5,7 @@
 @using MudBlazor
 @using TemplateGenerators.GeneratedServices
 @inject CardFormItemViewModel viewModel;
+@inject IComponentPool ComponentPool;
 @implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
@@ -30,19 +31,16 @@
         }
     }
 
-    IParentComponent _Control;
-    public IParentComponent Control
+    protected override void OnAfterRender(bool firstRender)
     {
-        get
+        base.OnAfterRender(firstRender);
+        if (viewModel.FormItem != null && Control != null)
         {
-            return _Control;
-        }
-        set
-        {
-            _Control = value;
-            value.Parent = this;
+            Control.Parent = this;
+            ComponentPool.SetParent(this, Control, viewModel.FormItem);
         }
     }
 
+    public IParentComponent Control { get; set; }
     public IParentComponent Parent { get; set; }
 }

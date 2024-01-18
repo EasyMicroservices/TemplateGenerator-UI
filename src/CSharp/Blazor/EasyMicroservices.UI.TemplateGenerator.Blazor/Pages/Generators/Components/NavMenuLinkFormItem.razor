@@ -5,6 +5,7 @@
 @using System.Text
 @using TemplateGenerators.GeneratedServices
 @inject NavMenuLinkFormItemViewModel viewModel;
+@inject IComponentPool ComponentPool;
 @implements IParentComponent
 
 <MudRTLProvider RightToLeft="BaseViewModel.IsRightToLeft">
@@ -35,17 +36,27 @@
             viewModel.FormItem = value;
         }
     }
-    IParentComponent _Control;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null))
+        {
+            foreach (var item in Controls)
+            {
+                item.Parent = this;
+                ComponentPool.SetParent(this, item, ((FormItemSingleItemGenerator)item).ViewModel.FormItem);
+            }
+        }
+    }
+
+    List<IParentComponent> Controls = new List<IParentComponent>();
     public IParentComponent Control
     {
-        get
-        {
-            return _Control;
-        }
         set
         {
-            _Control = value;
-            value.Parent = this;
+            if (!Controls.Contains(value))
+                Controls.Add(value);
         }
     }
     public IParentComponent Parent { get; set; }
