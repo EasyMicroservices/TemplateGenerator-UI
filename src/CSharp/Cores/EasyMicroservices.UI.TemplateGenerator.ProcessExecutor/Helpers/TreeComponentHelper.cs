@@ -16,6 +16,20 @@ public class TreeComponentHelper
         return items;
     }
 
+    public IComponent FindByInstance(object instance)
+    {
+        if (Root == null)
+            return null;
+        return GetAllComponents(Root).FirstOrDefault(x => x.ControlInstance == instance);
+    }
+
+    public IComponent FindByValueInstance(object instance)
+    {
+        if (Root == null)
+            return null;
+        return GetAllComponents(Root).FirstOrDefault(x => x.ValueInstance == instance);
+    }
+
     public IComponent GetRoot(IComponent component)
     {
         IComponent current = component;

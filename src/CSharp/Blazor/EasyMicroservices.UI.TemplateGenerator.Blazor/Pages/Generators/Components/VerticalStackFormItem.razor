@@ -12,7 +12,7 @@
     <MudStack Spacing="5">
         @foreach (var formItem in viewModel.FormItem?.Items?.OrderBy(x => x.Index))
         {
-            <FormItemSingleItemGenerator @ref=Control FormItem="@formItem" />
+            <FormItemSingleItemGenerator @ref="ChildControl" FormItem="@formItem" />
         }
     </MudStack>
 </MudRTLProvider>
@@ -39,7 +39,10 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null))
+        if (Parent != null && viewModel.FormItem != null)
+            ComponentPool.SetParent(Parent, this, viewModel.FormItem);
+
+        if (Controls.All(x => ((FormItemSingleItemGenerator)x).ViewModel.FormItem != null) && Controls.Count == viewModel.FormItem?.Items?.Count)
         {
             foreach (var item in Controls)
             {
@@ -50,7 +53,7 @@
     }
 
     List<IParentComponent> Controls = new List<IParentComponent>();
-    public IParentComponent Control
+    public IParentComponent ChildControl
     {
         set
         {
